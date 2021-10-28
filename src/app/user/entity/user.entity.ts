@@ -1,5 +1,5 @@
 import { DefaultEntity } from 'src/app/core/dbentity/default.entity';
-import {Column, Entity } from 'typeorm';
+import { Column, Entity } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import { classToPlain, Exclude } from 'class-transformer';
 import { IsEmail } from 'class-validator';
@@ -10,6 +10,8 @@ export class UserEntity extends DefaultEntity {
   @IsEmail()
   email: string;
 
+  @Column({ unique: true })
+  username: string;
 
   @Column()
   @Exclude()
@@ -20,6 +22,9 @@ export class UserEntity extends DefaultEntity {
 
   @Column()
   lastname: string;
+
+  @Column({ default: null, nullable: true })
+  key: string;
 
   @Column({ default: null, nullable: true })
   avatar: string | null;
