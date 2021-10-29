@@ -10,9 +10,6 @@ export class UserEntity extends DefaultEntity {
   @IsEmail()
   email: string;
 
-  @Column({ unique: true })
-  username: string;
-
   @Column()
   @Exclude()
   password: string;
@@ -23,8 +20,6 @@ export class UserEntity extends DefaultEntity {
   @Column()
   lastname: string;
 
-  @Column({ default: null, nullable: true })
-  key: string;
 
   @Column({ default: null, nullable: true })
   avatar: string | null;

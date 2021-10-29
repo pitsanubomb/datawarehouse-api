@@ -1,10 +1,9 @@
 import { IsEmail, IsString, MaxLength, MinLength } from 'class-validator';
 
 export class loginDTO {
-  @IsString()
-  @MinLength(6)
-  @MaxLength(20)
-  username: string;
+  @IsEmail()
+  @MinLength(4)
+  email: string;
 
   @IsString()
   @MinLength(6)
@@ -13,9 +12,6 @@ export class loginDTO {
 }
 
 export class craateUserDTO extends loginDTO {
-  @IsEmail()
-  @MinLength(4)
-  email: string;
 
   @IsString()
   @MinLength(4)

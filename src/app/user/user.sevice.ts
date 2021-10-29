@@ -12,6 +12,7 @@ import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UserService {
+  private readonly users: any;
   constructor(
     @InjectRepository(UserEntity, 'user')
     private readonly userRepo: Repository<UserEntity>,
@@ -23,12 +24,16 @@ export class UserService {
   async createuser(user: craateUserDTO) {
     try {
       user.password = await this.hashPassword(user.password);
-      return (await this.userRepo.save(user)).toJson();
+      return await this.userRepo.save(user);
     } catch (error) {
       if (error.code === 'ER_DUP_ENTRY')
         throw new ConflictException(`Username is already been taken`);
       throw new InternalServerErrorException();
     }
+  }
+
+  async find(_email: string) {
+    return this.users.find(user => user.username === _email);
   }
 
   async loginUser({ email, password }: loginDTO) {
@@ -41,6 +46,7 @@ export class UserService {
       if (!isValid && !isActive) {
         throw new UnauthorizedException('Invalid credentials');
       }
+      // console.log(user)
       return user.toJson();
     } catch (error) {
       throw new InternalServerErrorException();
