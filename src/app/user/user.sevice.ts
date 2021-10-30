@@ -43,7 +43,7 @@ export class UserService {
       });
       const isValid = await user.comparePassword(password);
       const isActive = user.isActive;
-      if (!isValid && !isActive) {
+      if (!isValid || !isActive) {
         throw new UnauthorizedException('Invalid credentials');
       }
       // console.log(user)
