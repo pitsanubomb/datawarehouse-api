@@ -4,7 +4,7 @@ import { Column, Entity } from 'typeorm';
 @Entity('product')
 export class ProductEntity extends DefaultEntity {
   @Column({ unique: true })
-  name: string;
+  productname: string;
 
   @Column({ type: 'varchar' })
   description: string;
@@ -12,21 +12,18 @@ export class ProductEntity extends DefaultEntity {
   @Column()
   img: string;
 
-  @Column({type:'float'})
-  price: number;
-
-  @Column({type:'float'})
-  cost: number;
-
-  @Column({type:'float'})
-  margin: number;
-
-  @Column({type:'float'})
-  sale: number;
+  @Column({ type: 'float' })
+  weight: number;
 
   @Column()
-  isArchived: boolean;
+  isContinuesell: boolean;
+
+  @Column()
+  isPos: boolean;
 
   @Column()
   isOnline: boolean;
+
+  @Column()
+  isArchived: boolean;
 }

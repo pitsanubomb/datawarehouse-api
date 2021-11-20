@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
+import { ProductEntity } from './product/entity/product.entity';
+import { SkuEntity } from './product/entity/sku.entity';
 import { UserEntity } from './user/entity/user.entity';
 import { UserModule } from './user/user.module';
 
@@ -14,7 +16,7 @@ import { UserModule } from './user/user.module';
       username: 'erp',
       password: 'Udlimited@1234',
       database: 'datawarehouse-data-dev',
-      entities: [],
+      entities: [ProductEntity,SkuEntity],
       synchronize: true,
     }),
     TypeOrmModule.forRoot({
