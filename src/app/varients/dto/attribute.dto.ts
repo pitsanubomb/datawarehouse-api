@@ -17,3 +17,10 @@ export class VarientDto {
   @IsNotEmpty()
   varientname: string;
 }
+
+export class VarientwithIdDto {
+  id: number;
+  @IsString()
+  @IsNotEmpty()
+  varientname: string;
+}

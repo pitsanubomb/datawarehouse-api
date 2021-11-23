@@ -1,4 +1,5 @@
 import { IsBoolean, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { VarientwithIdDto } from 'src/app/varients/dto/attribute.dto';
 
 export class ProductDto {
   @IsString()
@@ -44,6 +45,8 @@ export class CreateSkuDto {
 
   @IsNumber()
   margin: number;
+
+  varients?: VarientwithIdDto[];
 
   status: string;
 }
