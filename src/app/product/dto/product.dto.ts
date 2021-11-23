@@ -7,6 +7,8 @@ export class ProductDto {
 
   producttype?: string;
 
+  status: string;
+
   @IsString()
   description: string;
 
@@ -42,4 +44,6 @@ export class CreateSkuDto {
 
   @IsNumber()
   margin: number;
+
+  status: string;
 }

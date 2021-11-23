@@ -9,10 +9,10 @@ import {
 import { Status } from '../enum/status.enum';
 
 @Entity()
-export class DefaultEntity {
-  @PrimaryGeneratedColumn()
+export class DefaultUserEntity {
+  @PrimaryGeneratedColumn('uuid')
   @Exclude()
-  id: number;
+  id: string;
 
   @Column({ default: true })
   isActive: boolean;

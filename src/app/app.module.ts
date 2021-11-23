@@ -1,3 +1,4 @@
+import { VarientEntity } from './varients/entity/varients.entity';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
@@ -6,6 +7,8 @@ import { SkuEntity } from './product/entity/sku.entity';
 import { ProductModule } from './product/product.module';
 import { UserEntity } from './user/entity/user.entity';
 import { UserModule } from './user/user.module';
+import { AttributeEntity } from './varients/entity/attribute.entity';
+import { VarientModule } from './varients/varients.module';
 
 @Module({
   imports: [
@@ -13,12 +16,12 @@ import { UserModule } from './user/user.module';
       type: 'mysql',
       host: 'udomrat.ddns.net',
       name: 'data',
-      debug:true,
+      debug: true,
       port: 3306,
       username: 'erp',
       password: 'Udlimited@1234',
       database: 'datawarehouse-data-dev',
-      entities: [ProductEntity, SkuEntity],
+      entities: [ProductEntity, SkuEntity, AttributeEntity, VarientEntity],
       synchronize: true,
     }),
     TypeOrmModule.forRoot({
@@ -33,6 +36,7 @@ import { UserModule } from './user/user.module';
       synchronize: true,
     }),
     AuthModule,
+    VarientModule,
     UserModule,
     ProductModule,
   ],
