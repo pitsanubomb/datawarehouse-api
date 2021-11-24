@@ -1,6 +1,5 @@
 import { DefaultEntity } from 'src/app/core/dbentity/default.entity';
-import { VarientEntity } from 'src/app/varients/entity/varients.entity';
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { ProductEntity } from './product.entity';
 
 @Entity('sku')
@@ -10,6 +9,9 @@ export class SkuEntity extends DefaultEntity {
 
   @Column()
   barcode: string;
+
+  @Column({ nullable: true })
+  skuname: string;
 
   @Column({ type: 'float' })
   price: number;
@@ -22,8 +24,4 @@ export class SkuEntity extends DefaultEntity {
 
   @ManyToOne(() => ProductEntity, (product) => product.skus)
   product: ProductEntity;
-
-  @ManyToMany(() => VarientEntity, { cascade: true })
-  @JoinTable()
-  varients: VarientEntity[];
 }
