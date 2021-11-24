@@ -29,4 +29,11 @@ export class ProductService {
       throw new InternalServerErrorException();
     }
   }
+
+  async getAllwithCount() {
+    try {
+      const [res, count] = await this.productRepo.findAndCount();
+      return { data: res, total: count };
+    } catch (error) {}
+  }
 }

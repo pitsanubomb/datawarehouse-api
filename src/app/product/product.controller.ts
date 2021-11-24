@@ -15,4 +15,9 @@ export class ProductController {
   async getAll() {
     return await this.productService.getAll();
   }
+
+  @Get('total')
+  async getAllwithCount() {
+    return await this.productService.getAllwithCount();
+  }
 }

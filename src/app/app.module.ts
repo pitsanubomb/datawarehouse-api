@@ -18,7 +18,7 @@ import { ImagesEntity } from './images/entity/images.entity';
       type: 'mysql',
       host: 'udomrat.ddns.net',
       name: 'data',
-      debug: true,
+      // debug: true,
       port: 3306,
       username: 'erp',
       password: 'Udlimited@1234',
