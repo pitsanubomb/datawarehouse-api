@@ -1,4 +1,5 @@
 import { IsBoolean, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { ImagesDto } from 'src/app/images/dto/images.dto';
 
 export class ProductDto {
   @IsString()
@@ -30,6 +31,7 @@ export class ProductDto {
 
 export class createProduct extends ProductDto {
   skus: CreateSkuDto[];
+  images?: ImagesDto[];
 }
 
 export class CreateSkuDto {

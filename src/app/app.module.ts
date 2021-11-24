@@ -1,3 +1,4 @@
+import { ImageModule } from './images/images.modulet';
 import { VarientEntity } from './varients/entity/varients.entity';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -9,6 +10,7 @@ import { UserEntity } from './user/entity/user.entity';
 import { UserModule } from './user/user.module';
 import { AttributeEntity } from './varients/entity/attribute.entity';
 import { VarientModule } from './varients/varients.module';
+import { ImagesEntity } from './images/entity/images.entity';
 
 @Module({
   imports: [
@@ -21,7 +23,13 @@ import { VarientModule } from './varients/varients.module';
       username: 'erp',
       password: 'Udlimited@1234',
       database: 'datawarehouse-data-dev',
-      entities: [ProductEntity, SkuEntity, AttributeEntity, VarientEntity],
+      entities: [
+        ProductEntity,
+        SkuEntity,
+        AttributeEntity,
+        VarientEntity,
+        ImagesEntity,
+      ],
       synchronize: true,
     }),
     TypeOrmModule.forRoot({
@@ -39,6 +47,7 @@ import { VarientModule } from './varients/varients.module';
     VarientModule,
     UserModule,
     ProductModule,
+    ImageModule,
   ],
 })
 export class AppModule {}

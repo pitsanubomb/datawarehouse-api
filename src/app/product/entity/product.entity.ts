@@ -1,4 +1,5 @@
 import { DefaultEntity } from 'src/app/core/dbentity/default.entity';
+import { ImagesEntity } from 'src/app/images/entity/images.entity';
 import { Column, Entity, OneToMany } from 'typeorm';
 import { SkuEntity } from './sku.entity';
 
@@ -10,7 +11,7 @@ export enum ProductType {
 
 @Entity('product')
 export class ProductEntity extends DefaultEntity {
-  @Column({ unique: true })
+  // @Column({ unique: true })
   productname: string;
 
   @Column({ type: 'enum', enum: ProductType, default: ProductType.SINGLE })
@@ -42,4 +43,10 @@ export class ProductEntity extends DefaultEntity {
     eager: true,
   })
   skus: SkuEntity[];
+
+  @OneToMany(() => ImagesEntity, (images) => images.product, {
+    cascade: true,
+    eager: true,
+  })
+  images: ImagesEntity[];
 }
