@@ -25,6 +25,9 @@ export class ProductEntity extends DefaultEntity {
   @Column()
   isContinuesell: boolean;
 
+  @Column({ default: false, type: 'boolean' })
+  isMultipleoptions: boolean;
+
   @Column()
   isPos: boolean;
 

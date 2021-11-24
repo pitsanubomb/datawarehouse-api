@@ -19,6 +19,9 @@ export class ProductDto {
   isContinuesell: boolean;
 
   @IsBoolean()
+  isMultipleoptions: boolean;
+
+  @IsBoolean()
   isPos: boolean;
 
   @IsBoolean()
@@ -36,6 +39,7 @@ export class CreateSkuDto {
   @IsString()
   barcode: string;
 
+  @IsString()
   skuname?: string;
 
   @IsNumber()
