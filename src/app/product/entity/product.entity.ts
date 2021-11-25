@@ -20,8 +20,8 @@ export class ProductEntity extends DefaultEntity {
   @Column({ type: 'varchar' })
   description: string;
 
-  @Column({ type: 'float' })
-  weight: number;
+  @Column({ type: 'varchar',nullable: true})
+  countryorigin: string;
 
   @Column()
   isContinuesell: boolean;

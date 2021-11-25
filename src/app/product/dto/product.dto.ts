@@ -8,13 +8,13 @@ export class ProductDto {
 
   producttype?: string;
 
-  status: string;
+  status?: string;
 
   @IsString()
   description: string;
 
-  @IsNumber()
-  weight: number;
+  @IsString()
+  countryorigin?: string;
 
   @IsBoolean()
   isContinuesell: boolean;
@@ -53,5 +53,19 @@ export class CreateSkuDto {
   @IsNumber()
   margin: number;
 
-  status: string;
+  @IsNumber()
+  weight?: number;
+
+  @IsNumber()
+  width?: number;
+
+  @IsNumber()
+  height?: number;
+
+  @IsNumber()
+  long?: number;
+
+  status?: string;
+
+  images?: ImagesDto[];
 }
