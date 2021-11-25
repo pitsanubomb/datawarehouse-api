@@ -45,6 +45,9 @@ export class CreateSkuDto {
   skuname?: string;
 
   @IsNumber()
+  compareprice?: number;
+
+  @IsNumber()
   price: number;
 
   @IsNumber()

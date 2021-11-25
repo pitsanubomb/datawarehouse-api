@@ -14,11 +14,17 @@ export class SkuEntity extends DefaultEntity {
   @Column({ nullable: true })
   skuname: string;
 
+  @Column({ type: 'float', nullable: true })
+  compareprice: number;
+
   @Column({ type: 'float' })
   price: number;
 
   @Column({ type: 'float' })
   cost: number;
+
+  @Column({ type: 'float' })
+  margin: number;
 
   @Column({ type: 'float', nullable: true })
   weight: number;
@@ -31,9 +37,6 @@ export class SkuEntity extends DefaultEntity {
 
   @Column({ type: 'float', nullable: true })
   long: number;
-
-  @Column({ type: 'float' })
-  margin: number;
 
   @Column({ type: 'int', default: 0 })
   view: number;
