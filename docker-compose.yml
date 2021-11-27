@@ -1,0 +1,31 @@
+version: '3.4'
+
+services:
+  # datawarehouseapi:
+  #   image: datawarehouseapi
+  #   build:
+  #     context: .
+  #     dockerfile: ./Dockerfile
+  #   environment:
+  #     NODE_ENV: production
+  #   ports:
+  #     - 9000:9000
+  dataware-db:
+    platform: linux/x86_64
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+      # <Port exposed> : < MySQL Port running inside container>
+      - '3306:3306'
+    expose:
+      # Opens port 3306 on the container
+      - '3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: p@ssword
+  
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080

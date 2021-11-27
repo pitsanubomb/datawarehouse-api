@@ -16,12 +16,12 @@ import { ImagesEntity } from './images/entity/images.entity';
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'udomrat.ddns.net',
+      host: 'localhost',
       name: 'data',
-      // debug: true,
+      debug: true,
       port: 3306,
-      username: 'erp',
-      password: 'Udlimited@1234',
+      username: 'root',
+      password: 'p@ssword',
       database: 'datawarehouse-data-dev',
       entities: [
         ProductEntity,
@@ -35,10 +35,11 @@ import { ImagesEntity } from './images/entity/images.entity';
     TypeOrmModule.forRoot({
       type: 'mysql',
       name: 'user',
-      host: 'udomrat.ddns.net',
+      host: 'localhost',
       port: 3306,
-      username: 'erp',
-      password: 'Udlimited@1234',
+      debug:true,
+      username: 'root',
+      password: 'p@ssword',
       database: 'datawarehouse-dev',
       entities: [UserEntity],
       synchronize: true,

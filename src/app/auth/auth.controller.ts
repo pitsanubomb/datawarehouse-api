@@ -19,10 +19,10 @@ export class AuthController {
     private readonly authService: AuthenService,
   ) {}
 
-  @UseGuards(LocalAuthGuard)
+  // @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Request() req) {
-    const token = await this.authService.login(req.user);
+    const token = await this.authService.login(req.body);
     return { token: token.access_token };
   }
 
