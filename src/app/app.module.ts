@@ -1,3 +1,4 @@
+import { SupplierEntity } from './supplier/entity/entity';
 import { ImageModule } from './images/images.modulet';
 import { VarientEntity } from './varients/entity/varients.entity';
 import { Module } from '@nestjs/common';
@@ -13,6 +14,7 @@ import { VarientModule } from './varients/varients.module';
 import { ImagesEntity } from './images/entity/images.entity';
 import { VendorEntity } from './vendor/entity/vendor.entity';
 import { VendorModule } from './vendor/vendor.module';
+import { SupplierModule } from './supplier/supplier.module';
 
 @Module({
   imports: [
@@ -32,6 +34,7 @@ import { VendorModule } from './vendor/vendor.module';
         VarientEntity,
         VendorEntity,
         ImagesEntity,
+        SupplierEntity,
       ],
       synchronize: true,
     }),
@@ -53,6 +56,7 @@ import { VendorModule } from './vendor/vendor.module';
     ProductModule,
     ImageModule,
     VendorModule,
+    SupplierModule
   ],
 })
 export class AppModule {}
