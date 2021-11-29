@@ -1,6 +1,14 @@
 import { DefaultEntity } from 'src/app/core/dbentity/default.entity';
 import { ImagesEntity } from 'src/app/images/entity/images.entity';
-import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
+import { VarientEntity } from 'src/app/varients/entity/varients.entity';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 import { ProductEntity } from './product.entity';
 
 @Entity('sku')
@@ -49,4 +57,11 @@ export class SkuEntity extends DefaultEntity {
     eager: true,
   })
   images: ImagesEntity[];
+
+  @ManyToMany(() => VarientEntity, {
+    cascade: true,
+    eager: true,
+  })
+  @JoinTable()
+  varients: VarientEntity[];
 }

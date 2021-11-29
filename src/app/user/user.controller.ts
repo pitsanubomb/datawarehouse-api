@@ -11,8 +11,8 @@ export class UserController {
     return await this._userService.createuser(user);
   }
 
-  @Post('login')
-  async getuserWithPass(@Body() user:any) {
-    return await this._userService.find(user.email)
-  }
+  // @Post('login')
+  // async getuserWithPass(@Body() user:any) {
+  //   return await this._userService.find(user.email)
+  // }
 }

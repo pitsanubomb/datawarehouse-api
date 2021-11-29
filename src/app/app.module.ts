@@ -16,9 +16,9 @@ import { ImagesEntity } from './images/entity/images.entity';
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
+      host: '104.199.136.115',
       name: 'data',
-      debug: true,
+      // debug: true,
       port: 3306,
       username: 'root',
       password: 'p@ssword',
@@ -35,9 +35,9 @@ import { ImagesEntity } from './images/entity/images.entity';
     TypeOrmModule.forRoot({
       type: 'mysql',
       name: 'user',
-      host: 'localhost',
+      host: '104.199.136.115',
       port: 3306,
-      debug:true,
+      // debug:true,
       username: 'root',
       password: 'p@ssword',
       database: 'datawarehouse-dev',
