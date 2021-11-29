@@ -1,6 +1,7 @@
 import { DefaultEntity } from 'src/app/core/dbentity/default.entity';
 import { ImagesEntity } from 'src/app/images/entity/images.entity';
-import { Column, Entity, OneToMany } from 'typeorm';
+import { VendorEntity } from 'src/app/vendor/entity/vendor.entity';
+import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
 import { SkuEntity } from './sku.entity';
 
 export enum ProductType {
@@ -20,7 +21,7 @@ export class ProductEntity extends DefaultEntity {
   @Column({ type: 'varchar' })
   description: string;
 
-  @Column({ type: 'varchar',nullable: true})
+  @Column({ type: 'varchar', nullable: true })
   countryorigin: string;
 
   @Column()
@@ -49,4 +50,11 @@ export class ProductEntity extends DefaultEntity {
     eager: true,
   })
   images: ImagesEntity[];
+
+  @ManyToMany(() => VendorEntity, {
+    cascade: true,
+    eager: true,
+  })
+  @JoinTable()
+  vendor: VendorEntity[];
 }

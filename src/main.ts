@@ -11,6 +11,7 @@ async function bootstrap() {
     .setDescription('The Open Api Datawarehouse')
     .setVersion('1.0')
     .addTag('Datawarehouse')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('document', app, document);

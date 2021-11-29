@@ -36,6 +36,13 @@ export class ProductDto {
   @IsBoolean()
   isMultipleoptions: boolean;
 
+  @ApiProperty()
+  vendor: [
+    {
+      id: any;
+    },
+  ];
+
   @ApiProperty({ example: true, description: 'The product is on pos' })
   @IsBoolean()
   isPos: boolean;

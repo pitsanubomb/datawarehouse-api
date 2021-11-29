@@ -11,6 +11,8 @@ import { UserModule } from './user/user.module';
 import { AttributeEntity } from './varients/entity/attribute.entity';
 import { VarientModule } from './varients/varients.module';
 import { ImagesEntity } from './images/entity/images.entity';
+import { VendorEntity } from './vendor/entity/vendor.entity';
+import { VendorModule } from './vendor/vendor.module';
 
 @Module({
   imports: [
@@ -28,6 +30,7 @@ import { ImagesEntity } from './images/entity/images.entity';
         SkuEntity,
         AttributeEntity,
         VarientEntity,
+        VendorEntity,
         ImagesEntity,
       ],
       synchronize: true,
@@ -49,6 +52,7 @@ import { ImagesEntity } from './images/entity/images.entity';
     UserModule,
     ProductModule,
     ImageModule,
+    VendorModule,
   ],
 })
 export class AppModule {}

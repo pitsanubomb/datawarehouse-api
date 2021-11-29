@@ -31,6 +31,15 @@ export class AttributeService {
     }
   }
 
+
+  async findVarientAll() {
+    try {
+      return await this.varientsRepository.find()
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
   async findVarient(id: number) {
     try {
       return await this.varientsRepository.findOneOrFail({where: {id: id}})
