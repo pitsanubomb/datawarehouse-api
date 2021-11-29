@@ -23,8 +23,8 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   @ApiBody({ type: authDTO })
-  async login(@Body() body: authDTO) {
-    const token = await this.authService.login(body);
+  async login(@Body() body: authDTO,@Request() req:any) {
+    const token = await this.authService.login(req.user);
     return { token: token.access_token };
   }
 
