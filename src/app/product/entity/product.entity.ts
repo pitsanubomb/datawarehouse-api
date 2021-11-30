@@ -1,5 +1,6 @@
 import { DefaultEntity } from 'src/app/core/dbentity/default.entity';
 import { ImagesEntity } from 'src/app/images/entity/images.entity';
+import { SupplierEntity } from 'src/app/supplier/entity/entity';
 import { VendorEntity } from 'src/app/vendor/entity/vendor.entity';
 import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
 import { SkuEntity } from './sku.entity';
@@ -57,4 +58,12 @@ export class ProductEntity extends DefaultEntity {
   })
   @JoinTable()
   vendor: VendorEntity[];
+
+  @ManyToMany(() => SupplierEntity, {
+    cascade: true,
+    eager: true,
+  })
+  @JoinTable()
+  supplier: SupplierEntity[];
+
 }

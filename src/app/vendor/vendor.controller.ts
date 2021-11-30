@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { VendorDto } from './dto/vendor.dto';
@@ -22,10 +31,29 @@ export class VendorController {
     return await this.vendorService.getAll();
   }
 
+  @Get('active')
+  @UseGuards(JwtAuthGuard)
+  async getAllActive() {
+    return await this.vendorService.getAllactive();
+  }
+
+  @Get(':id')
+  @UseGuards(JwtAuthGuard)
+  async getById(@Param('id') id: number) {
+    return await this.vendorService.findbyId(id);
+  }
+
+
   @Put(':id')
   @ApiBody({ type: VendorDto })
   @UseGuards(JwtAuthGuard)
-  async updateddate(@Body() body: VendorDto ,@Param('id') id:number) {
-    return await this.vendorService.edit(body,id);
+  async updateddate(@Body() body: VendorDto, @Param('id') id: number) {
+    return await this.vendorService.edit(body, id);
+  }
+
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  async delete(@Param('id') id: number) {
+    return await this.vendorService.delete(id);
   }
 }

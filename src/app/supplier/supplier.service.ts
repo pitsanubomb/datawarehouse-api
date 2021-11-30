@@ -28,6 +28,17 @@ export class SupplierService {
     }
   }
 
+  async findActiveAll() {
+    try {
+      const [res, count] = await this.supplierepo.findAndCount({
+        where: { status: 'active' },
+      });
+      return { data: res, total: count };
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
+  }
+
   async findbyId(id: Number) {
     try {
       return await this.supplierepo.findOneOrFail({ where: { id: id } });
@@ -40,14 +51,19 @@ export class SupplierService {
     try {
       let edit = await this.findbyId(id);
       edit.suppliername = body.suppliername;
+      edit.status = body.status;
       return await this.supplierepo.save(edit);
     } catch (error) {
       throw new InternalServerErrorException();
     }
   }
-  
+
   async del(id: number) {
+    try {
       let del = await this.findbyId(id);
-      this.supplierepo.remove(del)
+      return this.supplierepo.remove(del);
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
   }
 }

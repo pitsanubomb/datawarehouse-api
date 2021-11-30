@@ -15,6 +15,10 @@ import { ImagesEntity } from './images/entity/images.entity';
 import { VendorEntity } from './vendor/entity/vendor.entity';
 import { VendorModule } from './vendor/vendor.module';
 import { SupplierModule } from './supplier/supplier.module';
+import { CategoryEntity } from './category/entity/category.entity';
+import { CategoryModule } from './category/category.module';
+import { CollectionModule } from './collection/collection.module';
+import { CollectionEntity } from './collection/entity/collection.entity';
 
 @Module({
   imports: [
@@ -35,6 +39,8 @@ import { SupplierModule } from './supplier/supplier.module';
         VendorEntity,
         ImagesEntity,
         SupplierEntity,
+        CategoryEntity,
+        CollectionEntity,
       ],
       synchronize: true,
     }),
@@ -56,7 +62,9 @@ import { SupplierModule } from './supplier/supplier.module';
     ProductModule,
     ImageModule,
     VendorModule,
-    SupplierModule
+    SupplierModule,
+    CategoryModule,
+    CollectionModule,
   ],
 })
 export class AppModule {}

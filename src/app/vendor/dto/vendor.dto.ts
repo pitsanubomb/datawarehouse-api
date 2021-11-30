@@ -6,4 +6,6 @@ export class VendorDto {
   @IsNotEmpty()
   @ApiProperty({ example: 'Apple', description: 'vendor name' })
   vendorname: string;
+  @ApiProperty({ example: 'active' })
+  status?: string;
 }

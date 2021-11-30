@@ -31,10 +31,30 @@ export class AttributeService {
     }
   }
 
+  async getAllActive() {
+    try {
+      return await this.attributeRepository.find({
+        relations: ['varients'],
+        where: { status: 'active' },
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
 
   async findVarientAll() {
     try {
-      return await this.varientsRepository.find()
+      return await this.varientsRepository.find();
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async findVarientAllActive() {
+    try {
+      return await this.varientsRepository.find({
+        where: { status: 'active' },
+      });
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
@@ -42,7 +62,7 @@ export class AttributeService {
 
   async findVarient(id: number) {
     try {
-      return await this.varientsRepository.findOneOrFail({where: {id: id}})
+      return await this.varientsRepository.findOneOrFail({ where: { id: id } });
     } catch (error) {
       throw new InternalServerErrorException(error);
     }

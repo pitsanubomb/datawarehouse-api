@@ -21,10 +21,22 @@ export class AttributeController {
     return this.attributeService.getAll();
   }
 
+  @Get('active')
+  @UseGuards(JwtAuthGuard)
+  getAllAtrributesActive() {
+    return this.attributeService.getAllActive();
+  }
+
   @Get('varients')
   @UseGuards(JwtAuthGuard)
   getVarietbyAll() {
     return this.attributeService.findVarientAll();
+  }
+
+  @Get('varients/active')
+  @UseGuards(JwtAuthGuard)
+  getVarietbyAllActive() {
+    return this.attributeService.findVarientAllActive();
   }
 
   @Get('varients/:id')

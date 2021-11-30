@@ -31,6 +31,11 @@ export class SupplierController {
     return await this.supplerService.findAll();
   }
 
+  @Get('active')
+  async getAllActive() {
+  return await this.supplerService.findActiveAll();
+  }
+
   @Get(':id')
   async getById(@Param('id') id: number) {
     return await this.supplerService.findbyId(id);

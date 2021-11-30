@@ -43,6 +43,13 @@ export class ProductDto {
     },
   ];
 
+  @ApiProperty()
+  supplier: [
+    {
+      id: any;
+    },
+  ];
+
   @ApiProperty({ example: true, description: 'The product is on pos' })
   @IsBoolean()
   isPos: boolean;
