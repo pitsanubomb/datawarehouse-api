@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsBoolean, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { ImagesDto } from 'src/app/images/dto/images.dto';
 
@@ -9,9 +9,9 @@ export class ProductDto {
   productname: string;
 
   @ApiProperty({ example: 'single', description: 'The product type' })
-  producttype?: string;
+  producttype: string;
 
-  @ApiProperty({ example: 'active', description: 'The product status' })
+  @ApiPropertyOptional({ example: 'active', description: 'The product status' })
   status?: string;
 
   @ApiProperty({ example: '. . .', description: 'The product detail' })
@@ -36,15 +36,29 @@ export class ProductDto {
   @IsBoolean()
   isMultipleoptions: boolean;
 
-  @ApiProperty()
-  vendor: [
+  @ApiPropertyOptional()
+  vendor?: [
     {
       id: any;
     },
   ];
 
-  @ApiProperty()
-  supplier: [
+  @ApiPropertyOptional()
+  supplier?: [
+    {
+      id: any;
+    },
+  ];
+
+  @ApiPropertyOptional()
+  category?: [
+    {
+      id: any;
+    },
+  ];
+
+  @ApiPropertyOptional()
+  collection?: [
     {
       id: any;
     },
