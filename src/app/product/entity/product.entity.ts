@@ -15,7 +15,7 @@ export enum ProductType {
 
 @Entity('product')
 export class ProductEntity extends DefaultEntity {
-  // @Column({ unique: true })
+  @Column()
   productname: string;
 
   @Column({ type: 'enum', enum: ProductType, default: ProductType.SINGLE })
