@@ -21,14 +21,20 @@ export class ProductService {
     try {
       return await this.productRepo.save(productBody);
     } catch (error) {
-      console.error(error)
-      throw new InternalServerErrorException();
+      throw new InternalServerErrorException(error);
     }
   }
 
   async getAll() {
     try {
-      return await this.productRepo.find();
+      return await this.productRepo
+        .createQueryBuilder('product')
+        .leftJoinAndSelect('product.skus', 'skus')
+        .leftJoinAndSelect('product.images', 'images')
+        .leftJoinAndSelect('product.vendor', 'vendors')
+        .loadRelationCountAndMap('product.varients', 'product.skus')
+        .getMany();
+      // return await this.productRepo.find();
     } catch (error) {
       throw new InternalServerErrorException();
     }

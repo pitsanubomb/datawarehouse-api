@@ -1,3 +1,5 @@
+import { WarehouseModule } from './warehouse/warehouse.module';
+import { warehouseEntity } from './warehouse/entity/warehouse.entity';
 import { SupplierEntity } from './supplier/entity/entity';
 import { ImageModule } from './images/images.modulet';
 import { VarientEntity } from './varients/entity/varients.entity';
@@ -41,6 +43,7 @@ import { CollectionEntity } from './collection/entity/collection.entity';
         SupplierEntity,
         CategoryEntity,
         CollectionEntity,
+        warehouseEntity,
       ],
       synchronize: true,
     }),
@@ -65,6 +68,7 @@ import { CollectionEntity } from './collection/entity/collection.entity';
     SupplierModule,
     CategoryModule,
     CollectionModule,
+    WarehouseModule
   ],
 })
 export class AppModule {}

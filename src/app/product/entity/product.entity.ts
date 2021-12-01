@@ -27,7 +27,7 @@ export class ProductEntity extends DefaultEntity {
   @Column({ type: 'varchar', nullable: true })
   countryorigin: string;
 
-  @Column()
+  @Column({nullable: true})
   isContinuesell: boolean;
 
   @Column({ default: false, type: 'boolean' })
