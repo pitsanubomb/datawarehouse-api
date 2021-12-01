@@ -35,7 +35,6 @@ export class WarehouseService {
       });
       return { success: true };
     } catch (error) {
-      console.log(error);
       throw new InternalServerErrorException(error);
     }
   }
@@ -45,7 +44,6 @@ export class WarehouseService {
     try {
       return await this.stockrepo.save(body);
     } catch (error) {
-      console.log(error);
       throw new InternalServerErrorException(error);
     }
   }

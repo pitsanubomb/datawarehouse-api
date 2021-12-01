@@ -46,7 +46,6 @@ export class UserService {
       if (!isValid || !isActive) {
         throw new UnauthorizedException('Invalid credentials');
       }
-      // console.log(user)
       return user.toJson();
     } catch (error) {
       throw new InternalServerErrorException();
