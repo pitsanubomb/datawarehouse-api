@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
-import { WarehouseDto } from './dto/warehouse.dto';
+import { addSkuDto, WarehouseDto } from './dto/warehouse.dto';
 
 @Controller('warehouse')
 @ApiTags('warehouse')
@@ -24,6 +24,12 @@ export class WarehouseController {
   @ApiBody({ type: WarehouseDto })
   async create(@Body() body: WarehouseDto) {
     return await this.warhouseService.create(body);
+  }
+
+  @Post('addsku')
+  // @ApiBody({ type: addSkuDto })
+  async addSku(@Body() body: any) {
+    return await this.warhouseService.addSku(body)
   }
 
   @Get()

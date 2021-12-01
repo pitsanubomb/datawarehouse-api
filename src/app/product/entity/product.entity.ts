@@ -27,16 +27,16 @@ export class ProductEntity extends DefaultEntity {
   @Column({ type: 'varchar', nullable: true })
   countryorigin: string;
 
-  @Column({nullable: true})
+  @Column({ nullable: true })
   isContinuesell: boolean;
 
   @Column({ default: false, type: 'boolean' })
   isMultipleoptions: boolean;
 
-  @Column()
+  @Column({ nullable: true })
   isPos: boolean;
 
-  @Column()
+  @Column({ nullable: true })
   isOnline: boolean;
 
   @Column({ default: false })
@@ -47,6 +47,12 @@ export class ProductEntity extends DefaultEntity {
     eager: true,
   })
   skus: SkuEntity[];
+
+  // @OneToMany(() => SkuEntity, (sku) => sku.product, {
+  //   cascade: true,
+  //   eager: true,
+  // })
+  // productlist: SkuEntity[];
 
   @OneToMany(() => ImagesEntity, (images) => images.product, {
     cascade: true,

@@ -1,3 +1,4 @@
+import { StockEntity } from './../../warehouse/entity/warehouse.entity';
 import { DefaultEntity } from 'src/app/core/dbentity/default.entity';
 import { ImagesEntity } from 'src/app/images/entity/images.entity';
 import { VarientEntity } from 'src/app/varients/entity/varients.entity';
@@ -57,6 +58,12 @@ export class SkuEntity extends DefaultEntity {
     eager: true,
   })
   images: ImagesEntity[];
+
+  @OneToMany(() => StockEntity, (stock) => stock.sku, {
+    cascade: true,
+    eager: true,
+  })
+  warehousestock: StockEntity[];
 
   @ManyToMany(() => VarientEntity, {
     cascade: true,

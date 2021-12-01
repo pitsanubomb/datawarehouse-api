@@ -27,16 +27,33 @@ export class ProductService {
 
   async getAll() {
     try {
-      return await this.productRepo
-        .createQueryBuilder('product')
-        .leftJoinAndSelect('product.skus', 'skus')
-        .leftJoinAndSelect('product.images', 'images')
-        .leftJoinAndSelect('product.vendor', 'vendors')
-        .loadRelationCountAndMap('product.varients', 'product.skus')
-        .getMany();
-      // return await this.productRepo.find();
+      // return await this.productRepo
+      //   .createQueryBuilder('product')
+      //   .leftJoinAndSelect('product.skus', 'skus')
+      //   .leftJoinAndSelect('product.images', 'images')
+      //   .leftJoinAndSelect('product.vendor', 'vendors')
+      //   // .leftJoinAndSelect('product.stock', 'stock')
+      //   .loadRelationCountAndMap('product.varients', 'product.skus')
+      //   .getMany();
+      return await this.productRepo.find();
     } catch (error) {
-      throw new InternalServerErrorException();
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async getAllSku() {
+    try {
+      return await this.skuRepo.find();
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async getSkuBysku(sku: string) {
+    try {
+      return await this.skuRepo.findOne({ where: { sku: sku } });
+    } catch (error) {
+      throw new InternalServerErrorException(error);
     }
   }
 
@@ -44,6 +61,8 @@ export class ProductService {
     try {
       const [res, count] = await this.productRepo.findAndCount();
       return { data: res, total: count };
-    } catch (error) {}
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 }

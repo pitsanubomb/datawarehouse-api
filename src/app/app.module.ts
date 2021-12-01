@@ -1,5 +1,8 @@
 import { WarehouseModule } from './warehouse/warehouse.module';
-import { warehouseEntity } from './warehouse/entity/warehouse.entity';
+import {
+  StockEntity,
+  warehouseEntity,
+} from './warehouse/entity/warehouse.entity';
 import { SupplierEntity } from './supplier/entity/entity';
 import { ImageModule } from './images/images.modulet';
 import { VarientEntity } from './varients/entity/varients.entity';
@@ -44,6 +47,7 @@ import { CollectionEntity } from './collection/entity/collection.entity';
         CategoryEntity,
         CollectionEntity,
         warehouseEntity,
+        StockEntity,
       ],
       synchronize: true,
     }),
@@ -68,7 +72,7 @@ import { CollectionEntity } from './collection/entity/collection.entity';
     SupplierModule,
     CategoryModule,
     CollectionModule,
-    WarehouseModule
+    WarehouseModule,
   ],
 })
 export class AppModule {}

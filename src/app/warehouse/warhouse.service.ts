@@ -1,14 +1,19 @@
-import { WarehouseDto } from './dto/warehouse.dto';
+import { addSkuDto, WarehouseDto } from './dto/warehouse.dto';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { warehouseEntity } from './entity/warehouse.entity';
+import { StockEntity, warehouseEntity } from './entity/warehouse.entity';
+import { SkuEntity } from '../product/entity/sku.entity';
 
 @Injectable()
 export class WarehouseService {
   constructor(
     @InjectRepository(warehouseEntity, 'data')
     private readonly warehouseRepo: Repository<warehouseEntity>,
+    @InjectRepository(SkuEntity, 'data')
+    private readonly skuRepo: Repository<SkuEntity>,
+    @InjectRepository(StockEntity, 'data')
+    private readonly stockrepo: Repository<StockEntity>,
   ) {}
 
   async create(warehouse: WarehouseDto) {
@@ -16,6 +21,32 @@ export class WarehouseService {
       return this.warehouseRepo.save(warehouse);
     } catch (error) {
       throw new InternalServerErrorException();
+    }
+  }
+  async addSku(body: any) {
+    // this.skuRepo.find
+    try {
+      body.skus.forEach(async (sku) => {
+        await this.stockrepo.save({
+          sku: sku.id,
+          warehouse: body.warehouse,
+          quantity: body.quantity,
+        });
+      });
+      return { success: true };
+    } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async addStock(body: addSkuDto) {
+    // this.skuRepo.find
+    try {
+      return await this.stockrepo.save(body);
+    } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException(error);
     }
   }
 

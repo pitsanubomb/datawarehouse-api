@@ -1,6 +1,6 @@
 import { createProduct } from './dto/product.dto';
 import { ProductService } from './product.service';
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ApiBody } from '@nestjs/swagger';
 
 @Controller('product')
@@ -16,6 +16,16 @@ export class ProductController {
   @Get()
   async getAll() {
     return await this.productService.getAll();
+  }
+
+  @Get('sku')
+  async getAllSku() {
+    return await this.productService.getAllSku();
+  }
+
+  @Get('sku/:sku')
+  async getSkubysku(@Param('sku') sku: string) {
+    return await this.productService.getSkuBysku(sku);
   }
 
   @Get('total')
