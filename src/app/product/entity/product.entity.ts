@@ -1,3 +1,5 @@
+import { CategoryEntity } from 'src/app/category/entity/category.entity';
+import { CollectionEntity } from 'src/app/collection/entity/collection.entity';
 import { DefaultEntity } from 'src/app/core/dbentity/default.entity';
 import { ImagesEntity } from 'src/app/images/entity/images.entity';
 import { SupplierEntity } from 'src/app/supplier/entity/entity';
@@ -66,4 +68,17 @@ export class ProductEntity extends DefaultEntity {
   @JoinTable()
   supplier: SupplierEntity[];
 
+  @ManyToMany(() => CategoryEntity, {
+    cascade: true,
+    eager: true,
+  })
+  @JoinTable()
+  category: CategoryEntity[];
+
+  @ManyToMany(() => CollectionEntity, {
+    cascade: true,
+    eager: true,
+  })
+  @JoinTable()
+  collection: CollectionEntity[];
 }
