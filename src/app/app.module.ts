@@ -1,3 +1,4 @@
+import { TransferEntity } from './transfer/entity/transfer.entity';
 import { WarehouseModule } from './warehouse/warehouse.module';
 import {
   StockEntity,
@@ -24,6 +25,7 @@ import { CategoryEntity } from './category/entity/category.entity';
 import { CategoryModule } from './category/category.module';
 import { CollectionModule } from './collection/collection.module';
 import { CollectionEntity } from './collection/entity/collection.entity';
+import { TransferModule } from './transfer/transfer.module';
 
 @Module({
   imports: [
@@ -48,6 +50,7 @@ import { CollectionEntity } from './collection/entity/collection.entity';
         CollectionEntity,
         warehouseEntity,
         StockEntity,
+        TransferEntity,
       ],
       synchronize: true,
     }),
@@ -73,6 +76,7 @@ import { CollectionEntity } from './collection/entity/collection.entity';
     CategoryModule,
     CollectionModule,
     WarehouseModule,
+    TransferModule,
   ],
 })
 export class AppModule {}

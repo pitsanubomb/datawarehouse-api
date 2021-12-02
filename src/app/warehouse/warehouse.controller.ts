@@ -15,8 +15,8 @@ import { addSkuDto, WarehouseDto } from './dto/warehouse.dto';
 
 @Controller('warehouse')
 @ApiTags('warehouse')
-@ApiBearerAuth()
-@UseGuards(JwtAuthGuard)
+// @ApiBearerAuth()
+// @UseGuards(JwtAuthGuard)
 export class WarehouseController {
   constructor(private readonly warhouseService: WarehouseService) {}
 
@@ -40,6 +40,16 @@ export class WarehouseController {
   @Get('active')
   async getAllActive() {
     return await this.warhouseService.findAciveAll();
+  }
+
+  @Get('/name/:name')
+  async getName(@Param('name') name: string) {
+    return await this.warhouseService.findByName(name);
+  }
+
+  @Get('/not/:name')
+  async getnotName(@Param('name') name: string) {
+    return await this.warhouseService.findByNotName(name);
   }
 
   @Get(':id')

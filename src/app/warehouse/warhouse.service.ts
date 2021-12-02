@@ -1,7 +1,7 @@
 import { addSkuDto, WarehouseDto } from './dto/warehouse.dto';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Equal, Not, Repository } from 'typeorm';
 import { StockEntity, warehouseEntity } from './entity/warehouse.entity';
 import { SkuEntity } from '../product/entity/sku.entity';
 
@@ -51,6 +51,24 @@ export class WarehouseService {
   async findById(id: number) {
     try {
       return this.warehouseRepo.findOneOrFail({ where: { id: id } });
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async findByName(name: string) {
+    try {
+      return this.warehouseRepo.findOneOrFail({
+        where: { warehousename: name },
+      });
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async findByNotName(name: string) {
+    try {
+      return this.warehouseRepo.find({ warehousename: Not(Equal(name)) });
     } catch (error) {
       throw new InternalServerErrorException();
     }

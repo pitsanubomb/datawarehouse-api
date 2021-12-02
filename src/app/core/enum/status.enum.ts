@@ -5,6 +5,7 @@ export enum Status {
   DEACTIVE = 'deactive',
   SAVE = 'save',
   PROGRESS = 'progress',
+  ONPEOCESS = 'onprocess	',
   INPROGRESS = 'inprogress',
   REJECT = 'reject',
 }
