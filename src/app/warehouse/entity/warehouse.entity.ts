@@ -7,6 +7,12 @@ export class warehouseEntity extends DefaultEntity {
   @Column()
   warehousename: string;
   @Column({ nullable: true })
+  adress: string;
+  @Column({ nullable: true })
+  email: string;
+  @Column({ nullable: true })
+  tel: string;
+  @Column({ nullable: true })
   description: string;
 
   @OneToMany((type) => StockEntity, (stock) => stock.warehouse)

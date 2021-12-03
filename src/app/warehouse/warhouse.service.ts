@@ -23,10 +23,23 @@ export class WarehouseService {
       throw new InternalServerErrorException();
     }
   }
+
+  async manageSku(body: addSkuDto) {
+    try {
+      return await this.stockrepo.save({
+        sku: body.sku,
+        warehouse: body.warehouse,
+        quantity: body.quantity,
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
   async addSku(body: any) {
     // this.skuRepo.find
     try {
-      body.skus.forEach(async (sku) => {
+      body.skus.forEach(async (sku: any) => {
         await this.stockrepo.save({
           sku: sku.id,
           warehouse: body.warehouse,

@@ -31,7 +31,8 @@ import { TransferModule } from './transfer/transfer.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: '104.199.136.115',
+      host: '107.167.182.168',
+      // host: 'localhost',
       name: 'data',
       // debug: true,
       port: 3306,
@@ -57,7 +58,7 @@ import { TransferModule } from './transfer/transfer.module';
     TypeOrmModule.forRoot({
       type: 'mysql',
       name: 'user',
-      host: '104.199.136.115',
+      host: '107.167.182.168',
       port: 3306,
       // debug:true,
       username: 'root',

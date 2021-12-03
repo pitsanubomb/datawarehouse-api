@@ -32,6 +32,12 @@ export class WarehouseController {
     return await this.warhouseService.addSku(body)
   }
 
+  @Post('managesku')
+  @ApiBody({ type: addSkuDto })
+  async setSku(@Body() body: any) {
+    return await this.warhouseService.manageSku(body)
+  }
+
   @Get()
   async getAll() {
     return await this.warhouseService.findAll();
