@@ -133,8 +133,8 @@ export class CreateSkuDto {
 export class createBundleDto {
   @ApiProperty({ description: 'sku id', example: 1 })
   sku: any;
-  @ApiProperty({ description: 'warehouse id', example: 1 })
-  product: any;
+  // @ApiProperty({ description: 'warehouse id', example: 1 })
+  // product: any;
   @ApiProperty({ description: 'quantity', example: 100 })
   quantity: number;
 }

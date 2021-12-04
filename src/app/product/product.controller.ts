@@ -19,14 +19,25 @@ export class ProductController {
     return await this.productService.getAll();
   }
 
+
   @Get('sku')
   async getAllSku() {
     return await this.productService.getAllSku();
   }
 
+  @Get(':id')
+  async getId(@Param('id') id: number) {
+    return await this.productService.getPorductId(id);
+  }
+
   @Get('sku/:sku')
   async getSkubysku(@Param('sku') sku: string) {
     return await this.productService.getSkuBysku(sku);
+  }
+
+  @Get('sku/id/:id')
+  async getSkubyId(@Param('id') id: number) {
+    return await this.productService.getSkuById(id);
   }
 
   @Get('total')

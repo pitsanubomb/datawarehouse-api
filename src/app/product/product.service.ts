@@ -41,9 +41,25 @@ export class ProductService {
     }
   }
 
+  async getPorductId(id: number) {
+    try {
+      return await this.productRepo.findOneOrFail(id);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
   async getAllSku() {
     try {
       return await this.skuRepo.find();
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async getSkuById(id: number) {
+    try {
+      return await this.skuRepo.findOneOrFail(id);
     } catch (error) {
       throw new InternalServerErrorException(error);
     }

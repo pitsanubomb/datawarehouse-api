@@ -49,7 +49,10 @@ export class ProductEntity extends DefaultEntity {
   skus: SkuEntity[];
 
 
-  @OneToMany((type) => BundleEntity, (bundle) => bundle.product)
+  @OneToMany((type) => BundleEntity, (bundle) => bundle.product,{
+    cascade: true,
+    eager: true,
+  })
   bundle: BundleEntity[];
 
   @OneToMany(() => ImagesEntity, (images) => images.product, {
@@ -92,7 +95,7 @@ export class ProductEntity extends DefaultEntity {
 export class BundleEntity extends DefaultEntity {
   @Column({ type: 'int', default: 0 })
   quantity: number;
-  
+
   @ManyToOne((type) => SkuEntity, (sku) => sku.bundle, {
     primary: true,
   })
