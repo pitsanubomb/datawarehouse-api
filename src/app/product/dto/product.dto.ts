@@ -119,7 +119,7 @@ export class CreateSkuDto {
 
   status?: string;
 
-  @ApiPropertyOptional({type:[ImagesDto]})
+  @ApiPropertyOptional({ type: [ImagesDto] })
   images?: ImagesDto[];
 
   @ApiPropertyOptional()
@@ -130,11 +130,23 @@ export class CreateSkuDto {
   ];
 }
 
+export class createBundleDto {
+  @ApiProperty({ description: 'sku id', example: 1 })
+  sku: any;
+  @ApiProperty({ description: 'warehouse id', example: 1 })
+  product: any;
+  @ApiProperty({ description: 'quantity', example: 100 })
+  quantity: number;
+}
+
 
 export class createProduct extends ProductDto {
-  @ApiPropertyOptional({type:[CreateSkuDto]})
+  @ApiPropertyOptional({ type: [CreateSkuDto] })
   skus?: CreateSkuDto[];
 
-  @ApiPropertyOptional({type:[ImagesDto]})
+  @ApiPropertyOptional({ type: [createBundleDto] })
+  bundle?: createBundleDto[];
+
+  @ApiPropertyOptional({ type: [ImagesDto] })
   images?: ImagesDto[];
 }

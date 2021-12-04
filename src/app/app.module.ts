@@ -10,7 +10,7 @@ import { VarientEntity } from './varients/entity/varients.entity';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
-import { ProductEntity } from './product/entity/product.entity';
+import { BundleEntity, ProductEntity } from './product/entity/product.entity';
 import { SkuEntity } from './product/entity/sku.entity';
 import { ProductModule } from './product/product.module';
 import { UserEntity } from './user/entity/user.entity';
@@ -41,6 +41,7 @@ import { UploadModule } from './upload/upload.module';
       password: 'p@ssword',
       database: 'datawarehouse-data-dev',
       entities: [
+        BundleEntity,
         ProductEntity,
         SkuEntity,
         AttributeEntity,

@@ -4,7 +4,7 @@ import { DefaultEntity } from 'src/app/core/dbentity/default.entity';
 import { ImagesEntity } from 'src/app/images/entity/images.entity';
 import { SupplierEntity } from 'src/app/supplier/entity/entity';
 import { VendorEntity } from 'src/app/vendor/entity/vendor.entity';
-import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
 import { SkuEntity } from './sku.entity';
 
 export enum ProductType {
@@ -48,11 +48,9 @@ export class ProductEntity extends DefaultEntity {
   })
   skus: SkuEntity[];
 
-  // @OneToMany(() => SkuEntity, (sku) => sku.product, {
-  //   cascade: true,
-  //   eager: true,
-  // })
-  // productlist: SkuEntity[];
+
+  @OneToMany((type) => BundleEntity, (bundle) => bundle.product)
+  bundle: BundleEntity[];
 
   @OneToMany(() => ImagesEntity, (images) => images.product, {
     cascade: true,
@@ -87,4 +85,21 @@ export class ProductEntity extends DefaultEntity {
   })
   @JoinTable()
   collection: CollectionEntity[];
+}
+
+
+@Entity('bundle')
+export class BundleEntity extends DefaultEntity {
+  @Column({ type: 'int', default: 0 })
+  quantity: number;
+  
+  @ManyToOne((type) => SkuEntity, (sku) => sku.bundle, {
+    primary: true,
+  })
+  sku: SkuEntity;
+
+  @ManyToOne((type) => ProductEntity, (product) => product.bundle, {
+    primary: true,
+  })
+  product: ProductEntity;
 }

@@ -10,7 +10,7 @@ import {
   ManyToOne,
   OneToMany,
 } from 'typeorm';
-import { ProductEntity } from './product.entity';
+import { BundleEntity, ProductEntity } from './product.entity';
 
 @Entity('sku')
 export class SkuEntity extends DefaultEntity {
@@ -64,6 +64,12 @@ export class SkuEntity extends DefaultEntity {
     eager: true,
   })
   warehousestock: StockEntity[];
+
+  @OneToMany(() => BundleEntity, (bundle) => bundle.sku, {
+    cascade: true,
+    eager: true,
+  })
+  bundle: BundleEntity[];
 
   @ManyToMany(() => VarientEntity, {
     cascade: true,
