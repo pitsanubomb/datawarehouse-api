@@ -26,6 +26,7 @@ import { CategoryModule } from './category/category.module';
 import { CollectionModule } from './collection/collection.module';
 import { CollectionEntity } from './collection/entity/collection.entity';
 import { TransferModule } from './transfer/transfer.module';
+import { UploadModule } from './upload/upload.module';
 
 @Module({
   imports: [
@@ -78,6 +79,7 @@ import { TransferModule } from './transfer/transfer.module';
     CollectionModule,
     WarehouseModule,
     TransferModule,
+    UploadModule,
   ],
 })
 export class AppModule {}
