@@ -73,12 +73,6 @@ export class ProductDto {
   isOnline: boolean;
 }
 
-export class createProduct extends ProductDto {
-  @ApiProperty()
-  skus: CreateSkuDto[];
-  images?: ImagesDto[];
-}
-
 export class CreateSkuDto {
   @ApiProperty()
   @IsString()
@@ -125,11 +119,22 @@ export class CreateSkuDto {
 
   status?: string;
 
+  @ApiPropertyOptional({type:[ImagesDto]})
   images?: ImagesDto[];
 
+  @ApiPropertyOptional()
   varients?: [
     {
       id: any;
     },
   ];
+}
+
+
+export class createProduct extends ProductDto {
+  @ApiPropertyOptional({type:[CreateSkuDto]})
+  skus?: CreateSkuDto[];
+
+  @ApiPropertyOptional({type:[ImagesDto]})
+  images?: ImagesDto[];
 }
