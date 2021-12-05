@@ -15,5 +15,5 @@ export class ImagesEntity extends DefaultEntity {
   product: ProductEntity;
 
   @ManyToOne(() => SkuEntity, (sku) => sku.images)
-  sku: ProductEntity;
+  sku: SkuEntity;
 }

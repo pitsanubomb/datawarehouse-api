@@ -8,4 +8,5 @@ export class CategoryEntity extends DefaultEntity {
   categoryname: string;
   @Column({ nullable: true })
   description: string;
+  
 }

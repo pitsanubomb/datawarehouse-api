@@ -44,4 +44,10 @@ export class AttributeController {
   getVarietbyId(@Param('id') id: number) {
     return this.attributeService.findVarient(id);
   }
+
+  @Get('by/varient/:id')
+  // @UseGuards(JwtAuthGuard)
+  getAttributeVarientbyId(@Param('id') id: number) {
+    return this.attributeService.findAtrributeFormVarient(id);
+  }
 }

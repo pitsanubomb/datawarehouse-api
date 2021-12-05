@@ -67,4 +67,16 @@ export class AttributeService {
       throw new InternalServerErrorException(error);
     }
   }
+
+  async findAtrributeFormVarient(id: number) {
+    try {
+      return this.attributeRepository
+        .createQueryBuilder('attribute')
+        .leftJoin('attribute.varients', 'varients')
+        .where('varients.id = :id', { id })
+        .getOneOrFail();
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
 }
