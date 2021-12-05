@@ -32,7 +32,7 @@ import { UploadModule } from './upload/upload.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: '107.167.182.168',
+      host: '104.199.136.115',
       // host: 'localhost',
       name: 'data',
       // debug: true,
@@ -60,7 +60,7 @@ import { UploadModule } from './upload/upload.module';
     TypeOrmModule.forRoot({
       type: 'mysql',
       name: 'user',
-      host: '107.167.182.168',
+      host: '104.199.136.115',
       port: 3306,
       // debug:true,
       username: 'root',
