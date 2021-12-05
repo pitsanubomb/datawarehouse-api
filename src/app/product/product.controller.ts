@@ -1,6 +1,6 @@
 import { createProduct } from './dto/product.dto';
 import { ProductService } from './product.service';
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 
 @Controller('product')
@@ -19,7 +19,6 @@ export class ProductController {
     return await this.productService.getAll();
   }
 
-
   @Get('sku')
   async getAllSku() {
     return await this.productService.getAllSku();
@@ -28,6 +27,11 @@ export class ProductController {
   @Get(':id')
   async getId(@Param('id') id: number) {
     return await this.productService.getPorductId(id);
+  }
+
+  @Put(':id')
+  async editProduct(@Param('id') id: number, @Body() body: any) {
+    return await this.productService.editProduct(id, body);
   }
 
   @Get('sku/:sku')

@@ -81,4 +81,20 @@ export class ProductService {
       throw new InternalServerErrorException(error);
     }
   }
+
+  async editProduct(id: number,product: any, ) {
+    try {
+      let edit = await this.productRepo.findOneOrFail(id);
+      edit.productname = product.productname;
+      // return edit
+      // edit.productname = product.productname;
+      // edit.skus = product.skus
+      // return edit;
+      // console.log(product)
+      return await this.productRepo.save(product);
+    } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException(error);
+    }
+  }
 }

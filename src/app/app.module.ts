@@ -32,7 +32,7 @@ import { UploadModule } from './upload/upload.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: '104.199.136.115',
+      host: 'datawarehouse.giize.com',
       // host: 'localhost',
       name: 'data',
       // debug: true,
@@ -60,7 +60,7 @@ import { UploadModule } from './upload/upload.module';
     TypeOrmModule.forRoot({
       type: 'mysql',
       name: 'user',
-      host: '104.199.136.115',
+      host: 'datawarehouse.giize.com',
       port: 3306,
       // debug:true,
       username: 'root',

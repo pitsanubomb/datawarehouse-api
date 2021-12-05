@@ -68,10 +68,7 @@ export class SkuEntity extends DefaultEntity {
   })
   warehousestock: StockEntity[];
 
-  @OneToMany(() => BundleEntity, (bundle) => bundle.sku, {
-    cascade: true,
-    eager: true,
-  })
+  @OneToMany(() => BundleEntity, (bundle) => bundle.sku)
   bundle: BundleEntity[];
 
   @ManyToMany(() => VarientEntity, {
