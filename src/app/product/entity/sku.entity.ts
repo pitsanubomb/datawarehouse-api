@@ -5,6 +5,7 @@ import { VarientEntity } from 'src/app/varients/entity/varients.entity';
 import {
   Column,
   Entity,
+  Index,
   JoinTable,
   ManyToMany,
   ManyToOne,
@@ -14,11 +15,13 @@ import { BundleEntity, ProductEntity } from './product.entity';
 
 @Entity('sku')
 export class SkuEntity extends DefaultEntity {
-  @Column({ unique: true })
-  sku: string;
+  // @Index({ unique: true, where: "sku IS NOT NULL" })
+  @Column({ unique: true, nullable: true })
+  sku!: string;
 
-  @Column()
-  barcode: string;
+  // @Index({ unique: true, where: "barcode IS NOT NULL" })
+  @Column({ unique: true, nullable: true })
+  barcode!: string;
 
   @Column({ nullable: true })
   skuname: string;
