@@ -6,6 +6,10 @@ import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 export class warehouseEntity extends DefaultEntity {
   @Column()
   warehousename: string;
+  @Column({ nullable: true, type: 'float' })
+  lattitude: number;
+  @Column({ nullable: true, type: 'float' })
+  longitude: number;
   @Column({ nullable: true })
   adress: string;
   @Column({ nullable: true })
@@ -14,7 +18,10 @@ export class warehouseEntity extends DefaultEntity {
   tel: string;
   @Column({ nullable: true })
   description: string;
-
+  @Column({ nullable: true })
+  contact: string;
+  @Column({ default: false })
+  isreturn: boolean;
   @OneToMany((type) => StockEntity, (stock) => stock.warehouse)
   stocks: StockEntity[];
 }
