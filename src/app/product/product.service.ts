@@ -41,9 +41,42 @@ export class ProductService {
     }
   }
 
+  async getAllQuery() {
+    try {
+      return await this.productRepo
+        .createQueryBuilder('product')
+        .leftJoin('product.skus', 'skus')
+        .leftJoinAndSelect('product.skus.warehousestock', 'stock')
+        // .leftJoinAndSelect('product.images', 'images')
+        .leftJoinAndSelect('product.vendor', 'vendors')
+        // .leftJoinAndSelect('product.sku.stock', 'stock')
+        // .loadRelationCountAndMap('product.varients', 'product.skus')
+        .addSelect('SUM(skus.view)', 'view')
+        .addSelect('COUNT(skus.id)', 'varients')
+        // .addSelect('SUM(skus.warehousestock.quantity)','quantity')
+        .groupBy('product.id')
+        .getRawMany();
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
   async getPorductId(id: number) {
     try {
       return await this.productRepo.findOneOrFail(id);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async getAllSingleSku() {
+    try {
+      return await this.productRepo
+        .createQueryBuilder('product')
+        .leftJoinAndSelect('product.skus', 'skus')
+        .where('product.producttype = :type', { type: 'single' })
+        .select('skus')
+        .getRawMany();
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
@@ -65,6 +98,20 @@ export class ProductService {
     }
   }
 
+  async getPorductIdbySkuid(id: number) {
+    try {
+      return await this.productRepo
+        .createQueryBuilder('product')
+        .leftJoin('product.skus', 'skus')
+        .addSelect('product.id')
+        .where('skus.id =:id', { id: id })
+        .getOne();
+    } catch (error) {
+      console.error(error);
+      throw new InternalServerErrorException(error);
+    }
+  }
+
   async getSkuBysku(sku: string) {
     try {
       return await this.skuRepo.findOne({ where: { sku: sku } });
@@ -82,7 +129,7 @@ export class ProductService {
     }
   }
 
-  async editProduct(id: number,product: any, ) {
+  async editProduct(id: number, product: any) {
     try {
       let edit = await this.productRepo.findOneOrFail(id);
       edit.productname = product.productname;

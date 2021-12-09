@@ -39,7 +39,7 @@ import { UploadModule } from './upload/upload.module';
       port: 3306,
       username: 'root',
       password: 'p@ssword',
-      database: 'datawarehouse-data-dev',
+      database: 'data-dev',
       entities: [
         BundleEntity,
         ProductEntity,

@@ -19,6 +19,11 @@ export class ProductController {
     return await this.productService.getAll();
   }
 
+  @Get('query')
+  async getAllQuery() {
+    return await this.productService.getAllQuery();
+  }
+
   @Get('sku')
   async getAllSku() {
     return await this.productService.getAllSku();
@@ -38,6 +43,10 @@ export class ProductController {
   async getSkubysku(@Param('sku') sku: string) {
     return await this.productService.getSkuBysku(sku);
   }
+  @Get('sku/type/single')
+  async getSkubySinglesku() {
+    return await this.productService.getAllSingleSku();
+  }
 
   @Get('sku/id/:id')
   async getSkubyId(@Param('id') id: number) {
@@ -47,5 +56,9 @@ export class ProductController {
   @Get('total')
   async getAllwithCount() {
     return await this.productService.getAllwithCount();
+  }
+  @Get('product/sku/:id')
+  async getProductbySkuId(@Param('id') id: number) {
+    return await this.productService.getPorductIdbySkuid(id);
   }
 }

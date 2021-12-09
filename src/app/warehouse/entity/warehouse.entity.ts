@@ -23,13 +23,9 @@ export class warehouseEntity extends DefaultEntity {
 export class StockEntity extends DefaultEntity {
   @Column({ type: 'int', default: 0 })
   quantity: number;
-  @ManyToOne((type) => SkuEntity, (sku) => sku.warehousestock, {
-    primary: true,
-  })
+  @ManyToOne((type) => SkuEntity, (sku) => sku.warehousestock)
   sku: SkuEntity;
 
-  @ManyToOne((type) => warehouseEntity, (warhouse) => warhouse.stocks, {
-    primary: true,
-  })
+  @ManyToOne((type) => warehouseEntity, (warhouse) => warhouse.stocks)
   warehouse: warehouseEntity;
 }
