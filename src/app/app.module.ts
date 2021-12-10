@@ -27,6 +27,11 @@ import { CollectionModule } from './collection/collection.module';
 import { CollectionEntity } from './collection/entity/collection.entity';
 import { TransferModule } from './transfer/transfer.module';
 import { UploadModule } from './upload/upload.module';
+import {
+  AddjustDescriptionEntity,
+  AdjustEntity,
+} from './addjust/entity/adjust.entity';
+import { AddjustModule } from './addjust/adjust.module';
 
 @Module({
   imports: [
@@ -39,7 +44,7 @@ import { UploadModule } from './upload/upload.module';
       port: 3306,
       username: 'root',
       password: 'p@ssword',
-      database: 'data-dev',
+      database: 'data-local',
       entities: [
         BundleEntity,
         ProductEntity,
@@ -54,6 +59,8 @@ import { UploadModule } from './upload/upload.module';
         warehouseEntity,
         StockEntity,
         TransferEntity,
+        AdjustEntity,
+        AddjustDescriptionEntity
       ],
       synchronize: true,
     }),
@@ -69,6 +76,7 @@ import { UploadModule } from './upload/upload.module';
       entities: [UserEntity],
       synchronize: true,
     }),
+    AddjustModule,
     AuthModule,
     VarientModule,
     UserModule,

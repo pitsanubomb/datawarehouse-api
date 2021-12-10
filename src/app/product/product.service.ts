@@ -21,6 +21,7 @@ export class ProductService {
     try {
       return await this.productRepo.save(productBody);
     } catch (error) {
+      console.log(error);
       throw new InternalServerErrorException(error);
     }
   }
@@ -74,8 +75,10 @@ export class ProductService {
       return await this.productRepo
         .createQueryBuilder('product')
         .leftJoinAndSelect('product.skus', 'skus')
+        // .groupBy('skus.id')
+        .leftJoinAndSelect('skus.varients', 'varients')
         .where('product.producttype = :type', { type: 'single' })
-        .select('skus')
+        .select(['skus', 'varients'])
         .getRawMany();
     } catch (error) {
       throw new InternalServerErrorException(error);

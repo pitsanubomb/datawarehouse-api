@@ -102,12 +102,12 @@ export class BundleEntity extends DefaultEntity {
   quantity: number;
 
   @ManyToOne((type) => SkuEntity, (sku) => sku.bundle, {
-    primary: true,
+    // primary: true,
   })
   sku: SkuEntity;
 
   @ManyToOne((type) => ProductEntity, (product) => product.bundle, {
-    primary: true,
+    // primary: true,
   })
   product: ProductEntity;
 }

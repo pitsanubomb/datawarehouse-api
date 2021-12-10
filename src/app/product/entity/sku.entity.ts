@@ -1,3 +1,7 @@
+import {
+  AddjustDescriptionEntity,
+  AdjustEntity,
+} from 'src/app/addjust/entity/adjust.entity';
 import { StockEntity } from './../../warehouse/entity/warehouse.entity';
 import { DefaultEntity } from 'src/app/core/dbentity/default.entity';
 import { ImagesEntity } from 'src/app/images/entity/images.entity';
@@ -12,6 +16,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { BundleEntity, ProductEntity } from './product.entity';
+import { AttributeEntity } from 'src/app/varients/entity/attribute.entity';
 
 @Entity('sku')
 export class SkuEntity extends DefaultEntity {
@@ -61,6 +66,12 @@ export class SkuEntity extends DefaultEntity {
     eager: true,
   })
   images: ImagesEntity[];
+
+  @OneToMany(() => AddjustDescriptionEntity, (addjusts) => addjusts.sku, {
+    cascade: true,
+    eager: true,
+  })
+  addjusts: AddjustDescriptionEntity[];
 
   @OneToMany(() => StockEntity, (stock) => stock.sku, {
     cascade: true,
