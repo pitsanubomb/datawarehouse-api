@@ -1,3 +1,4 @@
+import { AdjustEntity } from 'src/app/addjust/entity/adjust.entity';
 import { DefaultEntity } from 'src/app/core/dbentity/default.entity';
 import { SkuEntity } from 'src/app/product/entity/sku.entity';
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
@@ -22,8 +23,11 @@ export class warehouseEntity extends DefaultEntity {
   contact: string;
   @Column({ default: false })
   isreturn: boolean;
-  @OneToMany((type) => StockEntity, (stock) => stock.warehouse)
+  @OneToMany(() => StockEntity, (stock) => stock.warehouse)
   stocks: StockEntity[];
+
+  @ManyToOne(() => AdjustEntity, (addjusts) => addjusts.warehouse)
+  addjusts: AdjustEntity[];
 }
 
 @Entity('stock')

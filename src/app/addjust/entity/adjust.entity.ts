@@ -1,4 +1,5 @@
 import { SkuEntity } from 'src/app/product/entity/sku.entity';
+import { warehouseEntity } from 'src/app/warehouse/entity/warehouse.entity';
 import {
   Column,
   Entity,
@@ -13,11 +14,22 @@ export class AdjustEntity extends DefaultEntity {
   refno: string;
   @Column()
   addjusttype: string;
+
   @OneToMany(
     () => AddjustDescriptionEntity,
     (addjusttdescriptions) => addjusttdescriptions.adjust,
+    {
+      cascade: true,
+      eager: true,
+    },
   )
   adjusedescriptions: AddjustDescriptionEntity[];
+
+  @ManyToOne(() => warehouseEntity, (waehouse) => waehouse.addjusts, {
+    cascade: true,
+    eager: true,
+  })
+  warehouse: warehouseEntity;
 }
 
 @Entity('adjustmentdescription')

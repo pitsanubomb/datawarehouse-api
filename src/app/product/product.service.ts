@@ -95,8 +95,17 @@ export class ProductService {
 
   async getSkuById(id: number) {
     try {
-      return await this.skuRepo.findOneOrFail(id);
+      return await this.skuRepo
+        .createQueryBuilder('sku')
+        .leftJoinAndSelect('sku.warehousestock', 'stock')
+        .leftJoinAndSelect('stock.warehouse', 'warehouse')
+        .where('sku.id = :id', { id: id })
+        // .andWhere('warehouse.id = :d', { d: 1 })
+        // .groupBy('warehouse.id')
+        .getOne();
+      // return await this.skuRepo.findOneOrFail(id);
     } catch (error) {
+      // console.log(error)
       throw new InternalServerErrorException(error);
     }
   }
