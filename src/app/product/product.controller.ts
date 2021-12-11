@@ -1,12 +1,16 @@
 import { createProduct } from './dto/product.dto';
 import { ProductService } from './product.service';
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { ApiBody, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ImageService } from '../images/image.service';
 
 @Controller('product')
 @ApiTags('Product')
 export class ProductController {
-  constructor(private productService: ProductService) {}
+  constructor(
+    private productService: ProductService,
+    private imgService: ImageService,
+  ) {}
 
   @Post()
   @ApiBody({ type: createProduct })
@@ -22,6 +26,29 @@ export class ProductController {
   @Get('query')
   async getAllQuery() {
     return await this.productService.getAllQuery();
+  }
+
+  @Get('table')
+  @ApiQuery({ name: 'skip' })
+  @ApiQuery({ name: 'take' })
+  async getAllQueryTable(
+    @Query('skip') skip: number,
+    @Query('take') take: number,
+  ) {
+    const { data, total } = await this.productService.queryTable(
+      --skip,
+      --take,
+    );
+    let res = [];
+
+    for (const item of data) {
+      try {
+        const { imagepath } = await this.imgService.findImageByPid(item.id);
+        item.img = imagepath;
+      } catch (error) {}
+      res.push(item);
+    }
+    return { data: res, total: parseInt(total) };
   }
 
   @Get('sku')

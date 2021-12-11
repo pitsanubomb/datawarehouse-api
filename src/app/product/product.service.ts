@@ -42,6 +42,34 @@ export class ProductService {
     }
   }
 
+  async queryTable(skip: number, take: number) {
+    // console.log(skip, take);
+    try {
+      const data = await this.productRepo.query(`SELECT SQL_CALC_FOUND_ROWS
+      s.productId,
+      p.productname,
+      p.id,
+      SUM(s.view) 'view',
+      SUM(ws.quantity) quantity,
+      COUNT(s.productId) Variant,
+      p.producttype,
+      p.isOnline online,
+      p.createdate addon
+    FROM
+      product p
+      LEFT JOIN sku s ON p.id = s.productId
+      LEFT JOIN stock ws ON ws.skuId = s.id
+    GROUP BY
+      p.id
+    LIMIT ${skip},
+    ${take}`);
+      const rows = await this.productRepo.query(`SELECT FOUND_ROWS() total`);
+      return { data: data, total: rows[0].total };
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
   async getAllQuery() {
     try {
       return await this.productRepo
