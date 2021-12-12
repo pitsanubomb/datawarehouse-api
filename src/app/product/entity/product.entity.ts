@@ -88,7 +88,7 @@ export class ProductEntity extends DefaultEntity {
   @JoinTable()
   category: CategoryEntity[];
 
-  @ManyToOne(() => CollectionEntity,(collection) => collection.product, {
+  @ManyToOne(() => CollectionEntity, (collection) => collection.product, {
     cascade: true,
     eager: true,
   })

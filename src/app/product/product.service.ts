@@ -46,19 +46,22 @@ export class ProductService {
     // console.log(skip, take);
     try {
       const data = await this.productRepo.query(`SELECT SQL_CALC_FOUND_ROWS
-      s.productId,
       p.productname,
       p.id,
+      p.status,
+      v.vendorname,
       SUM(s.view) 'view',
       SUM(ws.quantity) quantity,
       COUNT(s.productId) Variant,
       p.producttype,
+      p.isMultipleoptions,
       p.isOnline online,
       p.createdate addon
     FROM
       product p
       LEFT JOIN sku s ON p.id = s.productId
       LEFT JOIN stock ws ON ws.skuId = s.id
+      LEFT JOIN vendor v ON v.id = p.vendorId
     GROUP BY
       p.id
     LIMIT ${skip},
@@ -125,8 +128,9 @@ export class ProductService {
     try {
       return await this.skuRepo
         .createQueryBuilder('sku')
-        .leftJoinAndSelect('sku.warehousestock', 'stock')
-        .leftJoinAndSelect('stock.warehouse', 'warehouse')
+        .leftJoinAndSelect('sku.varients', 'varients')
+        // .leftJoinAndSelect('sku.warehousestock', 'stock')
+        // .leftJoinAndSelect('stock.warehouse', 'warehouse')
         .where('sku.id = :id', { id: id })
         // .andWhere('warehouse.id = :d', { d: 1 })
         // .groupBy('warehouse.id')
@@ -155,6 +159,43 @@ export class ProductService {
   async getSkuBysku(sku: string) {
     try {
       return await this.skuRepo.findOne({ where: { sku: sku } });
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async getAllWarehousewithProductId(id: number) {
+    try {
+      return await this.productRepo.query(`SELECT
+      w.warehousename,
+      SUM(st.quantity) quantity
+    FROM
+      sku s
+      LEFT JOIN stock st ON s.id = st.skuId
+      LEFT JOIN product p ON s.productId = p.id
+      INNER JOIN warehouse w ON st.warehouseId = w.id
+    WHERE
+      p.id = ${id}
+    GROUP BY
+      st.warehouseId`);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async getAllWarehousewithSkuId(id: number) {
+    try {
+      return await this.skuRepo.query(`SELECT
+     w.warehousename,
+     SUM(st.quantity) quantity
+   FROM
+     sku s
+     LEFT JOIN stock st ON s.id = st.skuId
+     INNER JOIN warehouse w ON st.warehouseId = w.id
+   WHERE
+     s.id = ${id}
+   GROUP BY
+     st.warehouseId`);
     } catch (error) {
       throw new InternalServerErrorException(error);
     }

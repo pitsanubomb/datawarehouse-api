@@ -35,10 +35,9 @@ export class ProductController {
     @Query('skip') skip: number,
     @Query('take') take: number,
   ) {
-    const { data, total } = await this.productService.queryTable(
-      --skip,
-      --take,
-    );
+    if (skip == 1) skip = 0;
+    else skip = (skip - 1) * take + 1;
+    const { data, total } = await this.productService.queryTable(skip, take);
     let res = [];
 
     for (const item of data) {
@@ -73,6 +72,16 @@ export class ProductController {
   @Get('sku/type/single')
   async getSkubySinglesku() {
     return await this.productService.getAllSingleSku();
+  }
+
+  @Get('quantity/sku/:id')
+  async getallQuantity(@Param('id') id: number) {
+    return await this.productService.getAllWarehousewithSkuId(id);
+  }
+
+  @Get('quantity/product/:id')
+  async getallQuantitywithPid(@Param('id') id: number) {
+    return await this.productService.getAllWarehousewithProductId(id);
   }
 
   @Get('sku/id/:id')
