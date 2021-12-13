@@ -35,9 +35,8 @@ export class ProductController {
     @Query('skip') skip: number,
     @Query('take') take: number,
   ) {
-    if (skip == 1) skip = 0;
-    else skip = (skip - 1) * take + 1;
-    const { data, total } = await this.productService.queryTable(skip, take);
+    if(skip!==1)  skip = (skip - 1) * take + 1;
+    const { data, total } = await this.productService.queryTable(--skip,take);
     let res = [];
 
     for (const item of data) {
@@ -47,7 +46,7 @@ export class ProductController {
       } catch (error) {}
       res.push(item);
     }
-    return { data: res, total: parseInt(total) };
+    return { data: res, total: total };
   }
 
   @Get('sku')

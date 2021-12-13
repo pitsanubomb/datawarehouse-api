@@ -43,9 +43,8 @@ export class ProductService {
   }
 
   async queryTable(skip: number, take: number) {
-    // console.log(skip, take);
     try {
-      const data = await this.productRepo.query(`SELECT SQL_CALC_FOUND_ROWS
+      const data = await this.productRepo.query(`SELECT SQL_CALC_FOUND_ROWS 
       p.productname,
       p.id,
       p.status,
@@ -67,6 +66,7 @@ export class ProductService {
     LIMIT ${skip},
     ${take}`);
       const rows = await this.productRepo.query(`SELECT FOUND_ROWS() total`);
+
       return { data: data, total: rows[0].total };
     } catch (error) {
       throw new InternalServerErrorException(error);
