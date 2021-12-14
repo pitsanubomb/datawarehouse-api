@@ -65,9 +65,9 @@ export class ProductService {
       p.id
     LIMIT ${skip},
     ${take}`);
-      const rows = await this.productRepo.query(`SELECT FOUND_ROWS() total`);
+      const total = await this.productRepo.count();
 
-      return { data: data, total: rows[0].total };
+      return { data: data, total: total };
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
