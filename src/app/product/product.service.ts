@@ -1,8 +1,7 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { VarientEntity } from '../varients/entity/varients.entity';
-import { createProduct, CreateSkuDto, ProductDto } from './dto/product.dto';
+import { createProduct } from './dto/product.dto';
 import { ProductEntity } from './entity/product.entity';
 import { SkuEntity } from './entity/sku.entity';
 
@@ -13,8 +12,6 @@ export class ProductService {
     private readonly productRepo: Repository<ProductEntity>,
     @InjectRepository(SkuEntity, 'data')
     private readonly skuRepo: Repository<SkuEntity>,
-    @InjectRepository(VarientEntity, 'data')
-    private readonly varientRepo: Repository<VarientEntity>,
   ) {}
 
   async crateProduct(productBody: createProduct) {
@@ -44,25 +41,27 @@ export class ProductService {
 
   async queryTable(skip: number, take: number) {
     try {
-      const data = await this.productRepo.query(`SELECT SQL_CALC_FOUND_ROWS 
-      p.productname,
-      p.id,
-      p.status,
-      v.vendorname,
-      SUM(s.view) 'view',
-      SUM(ws.quantity) quantity,
-      COUNT(s.productId) Variant,
-      p.producttype,
-      p.isMultipleoptions,
-      p.isOnline online,
-      p.createdate addon
-    FROM
-      product p
-      LEFT JOIN sku s ON p.id = s.productId
-      LEFT JOIN stock ws ON ws.skuId = s.id
-      LEFT JOIN vendor v ON v.id = p.vendorId
-    GROUP BY
-      p.id
+      const data = await this.productRepo.query(`SELECT
+      MIN(img.imagepath) img,
+     product.id,
+     product.productname,
+     product.producttype,
+     product.status,
+     product.producttype,
+     product.isMultipleoptions,
+     COUNT(DISTINCT sku.id) Varient,
+     IFNULL(FORMAT(SUM(stock.quantity) / COUNT(DISTINCT stock.id),0), 0) quantity,
+     vendor.vendorname,
+     IFNULL(SUM(sku.view), 0) view,
+     IFNULL(product.isOnline, 0) online
+   FROM
+     sku
+     RIGHT JOIN product ON product.id = sku.productId
+     LEFT JOIN stock ON stock.skuId = sku.id
+     LEFT JOIN vendor ON vendor.id = product.vendorId
+     LEFT JOIN images img ON img.productId = product.id
+   GROUP BY
+     product.id
     LIMIT ${skip},
     ${take}`);
       const total = await this.productRepo.count();
