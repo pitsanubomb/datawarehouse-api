@@ -49,7 +49,7 @@ export class ProductService {
      product.status,
      product.producttype,
      product.isMultipleoptions,
-     COUNT(DISTINCT sku.id) Varient,
+     COUNT(DISTINCT sku.id) Variant,
      IFNULL(FORMAT(SUM(stock.quantity) / COUNT(DISTINCT stock.id),0), 0) quantity,
      vendor.vendorname,
      IFNULL(SUM(sku.view), 0) view,
