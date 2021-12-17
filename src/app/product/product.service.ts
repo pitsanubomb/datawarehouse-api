@@ -25,14 +25,6 @@ export class ProductService {
 
   async getAll() {
     try {
-      // return await this.productRepo
-      //   .createQueryBuilder('product')
-      //   .leftJoinAndSelect('product.skus', 'skus')
-      //   .leftJoinAndSelect('product.images', 'images')
-      //   .leftJoinAndSelect('product.vendor', 'vendors')
-      //   // .leftJoinAndSelect('product.stock', 'stock')
-      //   .loadRelationCountAndMap('product.varients', 'product.skus')
-      //   .getMany();
       return await this.productRepo.find();
     } catch (error) {
       throw new InternalServerErrorException(error);
@@ -42,7 +34,7 @@ export class ProductService {
   async queryTable(skip: number, take: number) {
     try {
       const data = await this.productRepo.query(`SELECT
-      MIN(img.imagepath) img,
+    MIN(img.imagepath) img,
      product.id,
      product.productname,
      product.producttype,
@@ -73,27 +65,7 @@ export class ProductService {
     }
   }
 
-  async getAllQuery() {
-    try {
-      return await this.productRepo
-        .createQueryBuilder('product')
-        .leftJoin('product.skus', 'skus')
-        .leftJoinAndSelect('product.skus.warehousestock', 'stock')
-        // .leftJoinAndSelect('product.images', 'images')
-        .leftJoinAndSelect('product.vendor', 'vendors')
-        // .leftJoinAndSelect('product.sku.stock', 'stock')
-        // .loadRelationCountAndMap('product.varients', 'product.skus')
-        .addSelect('SUM(skus.view)', 'view')
-        .addSelect('COUNT(skus.id)', 'varients')
-        // .addSelect('SUM(skus.warehousestock.quantity)','quantity')
-        .groupBy('product.id')
-        .getRawMany();
-    } catch (error) {
-      throw new InternalServerErrorException(error);
-    }
-  }
-
-  async getPorductId(id: number) {
+  async getProductId(id: number) {
     try {
       return await this.productRepo.findOneOrFail(id);
     } catch (error) {
@@ -101,16 +73,25 @@ export class ProductService {
     }
   }
 
-  async getAllSingleSku() {
+  async getAllSkuwithStatus(productType: string) {
     try {
-      return await this.productRepo
-        .createQueryBuilder('product')
-        .leftJoinAndSelect('product.skus', 'skus')
-        // .groupBy('skus.id')
-        .leftJoinAndSelect('skus.varients', 'varients')
-        .where('product.producttype = :type', { type: 'single' })
-        .select(['skus', 'varients'])
-        .getRawMany();
+      return await this.productRepo.query(`
+      SELECT
+	    sku.id,
+	    sku.sku,
+	    sku.barcode,
+	    sku.skuname,
+	    CONCAT(sku.skuname, ' ', IFNULL(GROUP_CONCAT(varient.varientname SEPARATOR '/'), '')) productname
+      FROM
+	    sku
+	    LEFT JOIN product ON product.id = sku.productId
+	    LEFT JOIN sku_varients_varient ON sku_varients_varient.skuId = sku.id
+	    LEFT JOIN varient ON varient.id = sku_varients_varient.varientId
+      WHERE
+	    product.producttype = '${productType}'
+      GROUP BY
+	    sku.id
+      `);
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
@@ -129,11 +110,7 @@ export class ProductService {
       return await this.skuRepo
         .createQueryBuilder('sku')
         .leftJoinAndSelect('sku.varients', 'varients')
-        // .leftJoinAndSelect('sku.warehousestock', 'stock')
-        // .leftJoinAndSelect('stock.warehouse', 'warehouse')
         .where('sku.id = :id', { id: id })
-        // .andWhere('warehouse.id = :d', { d: 1 })
-        // .groupBy('warehouse.id')
         .getOne();
       // return await this.skuRepo.findOneOrFail(id);
     } catch (error) {
@@ -212,13 +189,7 @@ export class ProductService {
 
   async editProduct(id: number, product: any) {
     try {
-      let edit = await this.productRepo.findOneOrFail(id);
-      edit.productname = product.productname;
-      // return edit
-      // edit.productname = product.productname;
-      // edit.skus = product.skus
-      // return edit;
-      // console.log(product)
+      await this.productRepo.findOneOrFail(id);
       return await this.productRepo.save(product);
     } catch (error) {
       console.log(error);

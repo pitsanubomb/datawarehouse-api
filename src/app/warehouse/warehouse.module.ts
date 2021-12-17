@@ -6,8 +6,11 @@ import { WarehouseService } from './warhouse.service';
 import { SkuEntity } from '../product/entity/sku.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([warehouseEntity,SkuEntity,StockEntity], 'data')],
+  imports: [
+    TypeOrmModule.forFeature([warehouseEntity, SkuEntity, StockEntity], 'data'),
+  ],
   controllers: [WarehouseController],
   providers: [WarehouseService],
+  exports: [WarehouseService],
 })
 export class WarehouseModule {}

@@ -5,7 +5,6 @@ import {
   IsNotEmpty,
   IsArray,
   IsOptional,
-  ValidateNested,
   IsNumber,
 } from 'class-validator';
 
@@ -24,7 +23,7 @@ export class Addjusttdescriptions {
 export class AdjustDto {
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   refno: string;
 
   @ApiProperty()
@@ -35,10 +34,9 @@ export class AdjustDto {
   @ApiProperty()
   @IsArray()
   @Type(() => Addjusttdescriptions)
-  @ValidateNested({ each: true })
-  @IsOptional()
+  @IsNotEmpty()
   @ApiPropertyOptional({ type: [Addjusttdescriptions] })
-  addjusttdescriptions?: Addjusttdescriptions[];
+  addjusttdescriptions: Addjusttdescriptions[];
 
   @ApiPropertyOptional({ type: 'string', description: '', example: 'active' })
   status?: string;

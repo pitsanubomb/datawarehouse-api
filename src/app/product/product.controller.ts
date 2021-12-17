@@ -7,10 +7,7 @@ import { ImageService } from '../images/image.service';
 @Controller('product')
 @ApiTags('Product')
 export class ProductController {
-  constructor(
-    private productService: ProductService,
-    private imgService: ImageService,
-  ) {}
+  constructor(private productService: ProductService) {}
 
   @Post()
   @ApiBody({ type: createProduct })
@@ -23,11 +20,6 @@ export class ProductController {
     return await this.productService.getAll();
   }
 
-  @Get('query')
-  async getAllQuery() {
-    return await this.productService.getAllQuery();
-  }
-
   @Get('table')
   @ApiQuery({ name: 'skip' })
   @ApiQuery({ name: 'take' })
@@ -35,9 +27,8 @@ export class ProductController {
     @Query('skip') skip: number,
     @Query('take') take: number,
   ) {
-    console.time(`perform`)
-    if(skip!==1)  skip = (skip - 1) * take + 1;
-    return await this.productService.queryTable(--skip,take);
+    if (skip !== 1) skip = (skip - 1) * take + 1;
+    return await this.productService.queryTable(--skip, take);
   }
 
   @Get('sku')
@@ -47,7 +38,7 @@ export class ProductController {
 
   @Get(':id')
   async getId(@Param('id') id: number) {
-    return await this.productService.getPorductId(id);
+    return await this.productService.getProductId(id);
   }
 
   @Put(':id')
@@ -59,9 +50,11 @@ export class ProductController {
   async getSkubysku(@Param('sku') sku: string) {
     return await this.productService.getSkuBysku(sku);
   }
-  @Get('sku/type/single')
-  async getSkubySinglesku() {
-    return await this.productService.getAllSingleSku();
+
+  @Get('sku/product/type')
+  @ApiQuery({ name: 'producttype'})
+  async getSkubySinglesku(@Query('producttype') producttype: string) {
+    return await this.productService.getAllSkuwithStatus(producttype);
   }
 
   @Get('quantity/sku/:id')

@@ -10,7 +10,7 @@ import {
 import { DefaultEntity } from './../../core/dbentity/default.entity';
 @Entity('adjustment')
 export class AdjustEntity extends DefaultEntity {
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: true })
   refno: string;
   @Column()
   addjusttype: string;
