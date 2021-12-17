@@ -1,7 +1,7 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { AddjustDto } from './dto/addjust.dto';
+import { AdjustDto } from './dto/adjust.dto';
 import { AdjustEntity } from './entity/adjust.entity';
 
 @Injectable()
@@ -11,7 +11,7 @@ export class AdjustService {
     private readonly adjustRepo: Repository<AdjustEntity>,
   ) {}
 
-  async createAddjust(body: AddjustDto) {
+  async createAdjust(body: AdjustDto) {
     try {
       return this.adjustRepo.save(body);
     } catch (error) {

@@ -1,7 +1,7 @@
 import { AdjustService } from './adjust.service';
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
-import { AddjustDto } from './dto/addjust.dto';
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
+import { AdjustDto } from './dto/adjust.dto';
 
 @Controller('adjustment')
 @ApiTags('Adjustment')
@@ -9,8 +9,8 @@ export class AddjustController {
   constructor(private adjustmentService: AdjustService) {}
 
   @Post()
-  async crate(@Body() body: AddjustDto) {
-    return await this.adjustmentService.createAddjust(body);
+  async crate(@Body() body: AdjustDto) {
+    return await this.adjustmentService.createAdjust(body);
   }
 
   @Get()

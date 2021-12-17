@@ -23,9 +23,9 @@ export class AdjustEntity extends DefaultEntity {
       eager: true,
     },
   )
-  adjusedescriptions: AddjustDescriptionEntity[];
+  addjusttdescriptions: AddjustDescriptionEntity[];
 
-  @ManyToOne(() => warehouseEntity, (waehouse) => waehouse.addjusts, {
+  @ManyToOne(() => warehouseEntity, (warehouse) => warehouse.addjusts, {
     cascade: true,
     eager: true,
   })
@@ -41,6 +41,6 @@ export class AddjustDescriptionEntity {
   @ManyToOne(() => SkuEntity, (sku) => sku.addjusts)
   sku: SkuEntity;
 
-  @ManyToOne(() => AdjustEntity, (adjust) => adjust.adjusedescriptions)
+  @ManyToOne(() => AdjustEntity, (adjust) => adjust.addjusttdescriptions)
   adjust: AdjustEntity;
 }

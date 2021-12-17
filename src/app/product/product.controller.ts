@@ -35,18 +35,9 @@ export class ProductController {
     @Query('skip') skip: number,
     @Query('take') take: number,
   ) {
+    console.time(`perform`)
     if(skip!==1)  skip = (skip - 1) * take + 1;
-    const { data, total } = await this.productService.queryTable(--skip,take);
-    // let res = [];
-
-    // for (const item of data) {
-    //   try {
-    //     const { imagepath } = await this.imgService.findImageByPid(item.id);
-    //     item.img = imagepath;
-    //   } catch (error) {}
-    //   res.push(item);
-    // }
-    return { data: data, total: total };
+    return await this.productService.queryTable(--skip,take);
   }
 
   @Get('sku')

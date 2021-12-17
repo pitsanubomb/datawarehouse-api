@@ -48,6 +48,7 @@ export class ProductService {
      product.producttype,
      product.status,
      product.producttype,
+     product.createdate addon,
      product.isMultipleoptions,
      COUNT(DISTINCT sku.id) Variant,
      IFNULL(FORMAT(SUM(stock.quantity) / COUNT(DISTINCT stock.id),0), 0) quantity,
