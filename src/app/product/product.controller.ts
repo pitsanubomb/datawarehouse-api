@@ -2,7 +2,6 @@ import { createProduct } from './dto/product.dto';
 import { ProductService } from './product.service';
 import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { ApiBody, ApiQuery, ApiTags } from '@nestjs/swagger';
-import { ImageService } from '../images/image.service';
 
 @Controller('product')
 @ApiTags('Product')

@@ -28,16 +28,19 @@ export class AddjustController {
       throw new InternalServerErrorException(`Can't adjust`);
     }
 
-    let quantity: number;
-    const sku = body.addjusttdescriptions[0].sku;
-    const warehouse = body.warehouse;
-    if (body.addjusttype === 'add' || body.addjusttype === 'set') {
-      quantity = body.addjusttdescriptions[0].quantity;
-    } else {
-      quantity = -body.addjusttdescriptions[0].quantity;
-    }
+    body.addjusttdescriptions.forEach(async (item) => {
+      let quantity: number;
+      const sku = item.sku;
+      const warehouse = body.warehouse;
+      if (body.addjusttype === 'add' || body.addjusttype === 'set') {
+        quantity = item.quantity;
+      } else {
+        quantity = -item.quantity;
+      }
 
-    await this.warehouseService.manageSku({ sku, warehouse, quantity });
+      await this.warehouseService.manageSku({ sku, warehouse, quantity });
+    });
+
     return adj;
   }
 
