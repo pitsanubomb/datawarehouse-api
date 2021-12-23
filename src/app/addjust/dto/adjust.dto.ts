@@ -6,7 +6,10 @@ import {
   IsArray,
   IsOptional,
   IsNumber,
+  ValidateNested,
+  IsEnum,
 } from 'class-validator';
+import { Adjusttype } from 'src/app/core/enum/adjusttype.enum';
 
 export class Addjusttdescriptions {
   @ApiProperty({ example: 0 })
@@ -18,6 +21,11 @@ export class Addjusttdescriptions {
   @IsString()
   @IsNotEmpty()
   sku: any;
+
+  @ApiProperty({ enum: Adjusttype })
+  @IsNotEmpty()
+  @IsEnum(Adjusttype)
+  addjusttype: Adjusttype;
 }
 
 export class AdjustDto {
@@ -26,21 +34,20 @@ export class AdjustDto {
   @IsOptional()
   refno: string;
 
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  addjusttype: string;
-
-  @ApiProperty()
+  
+  
+  @ApiProperty({ type: [Addjusttdescriptions] })
   @IsArray()
   @Type(() => Addjusttdescriptions)
   @IsNotEmpty()
-  @ApiPropertyOptional({ type: [Addjusttdescriptions] })
-  addjusttdescriptions: Addjusttdescriptions[];
+  @ValidateNested({ each: true })
+  addjustdescriptions: Addjusttdescriptions[];
 
   @ApiPropertyOptional({ type: 'string', description: '', example: 'active' })
   status?: string;
 
-  @ApiPropertyOptional({ example: 1 })
+
+  @ApiProperty({ example: 1 })
+  @IsNotEmpty()
   warehouse?: any;
 }

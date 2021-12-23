@@ -5,16 +5,22 @@ import {
   Controller,
   Get,
   InternalServerErrorException,
+  Request,
   Param,
   Post,
   Query,
+  UseGuards,
+  Put,
 } from '@nestjs/common';
-import { ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { AdjustDto } from './dto/adjust.dto';
 import { AdjustEntity } from './entity/adjust.entity';
+import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 
 @Controller('adjustment')
 @ApiTags('Adjustment')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 export class AddjustController {
   constructor(
     private adjustmentService: AdjustService,
@@ -22,24 +28,32 @@ export class AddjustController {
   ) {}
 
   @Post()
-  async crate(@Body() body: AdjustDto): Promise<AdjustEntity> {
-    const adj: AdjustEntity = await this.adjustmentService.createAdjust(body);
+  async crate(
+    @Body() body: AdjustDto,
+    @Request() { user },
+  ): Promise<AdjustEntity> {
+    let saveBody: any = body;
+    saveBody.createby = user.user.name;
+    if ((body.status === 'approve')) saveBody.approveby = user.user.name;
+    const adj: any = await this.adjustmentService.createAdjust(body);
     if (!adj) {
       throw new InternalServerErrorException(`Can't adjust`);
     }
 
-    body.addjusttdescriptions.forEach(async (item) => {
-      let quantity: number;
-      const sku = item.sku;
-      const warehouse = body.warehouse;
-      if (body.addjusttype === 'add' || body.addjusttype === 'set') {
-        quantity = item.quantity;
-      } else {
-        quantity = -item.quantity;
-      }
+    if (body.status === 'approve') {
+      body.addjustdescriptions.forEach(async (item) => {
+        let quantity: number;
+        const sku = item.sku;
+        const warehouse = body.warehouse;
+        if (item.addjusttype === 0 || item.addjusttype === 1) {
+          quantity = item.quantity;
+        } else {
+          quantity = -item.quantity;
+        }
 
-      await this.warehouseService.manageSku({ sku, warehouse, quantity });
-    });
+        await this.warehouseService.manageSku({ sku, warehouse, quantity });
+      });
+    }
 
     return adj;
   }
@@ -49,14 +63,34 @@ export class AddjustController {
     return await this.adjustmentService.getAllAdjust();
   }
 
-  @Get('warehouse')
-  @ApiQuery({ name: 'id' })
-  async getByWarehouseId(@Query('id') id: number) {
-    return await this.adjustmentService.getByWarehouseId(id);
-  }
-
   @Get(':id')
   async getbyId(@Param('id') id: number) {
-    return await this.adjustmentService.getbyId(id);
+    return await this.adjustmentService.getById(id);
+  }
+
+  @Put(':id')
+  async ediAdjust(@Param('id') id:number, @Body() body: AdjustDto,@Request() { user }):Promise<AdjustEntity>{
+    let saveBody: any = body;
+    if ((body.status === 'approve')) saveBody.approveby = user.user.name;
+    const adj: any = await this.adjustmentService.createAdjust(body);
+    if (!adj) {
+      throw new InternalServerErrorException(`Can't adjust`);
+    }
+
+    if (body.status === 'approve') {
+      body.addjustdescriptions.forEach(async (item) => {
+        let quantity: number;
+        const sku = item.sku;
+        const warehouse = body.warehouse;
+        if (item.addjusttype === 0 || item.addjusttype === 1) {
+          quantity = item.quantity;
+        } else {
+          quantity = -item.quantity;
+        }
+        const test = await this.warehouseService.manageSku({ sku, warehouse, quantity });
+      });
+    }
+
+    return adj;
   }
 }

@@ -2,10 +2,8 @@ import {
   Body,
   Controller,
   Get,
-  HttpCode,
   Post,
   Request,
-  Res,
   UseGuards,
 } from '@nestjs/common';
 import { AuthenService } from './auth.service';

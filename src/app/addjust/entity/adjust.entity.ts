@@ -1,3 +1,4 @@
+import { Adjusttype } from 'src/app/core/enum/adjusttype.enum';
 import { SkuEntity } from 'src/app/product/entity/sku.entity';
 import { warehouseEntity } from 'src/app/warehouse/entity/warehouse.entity';
 import {
@@ -12,7 +13,8 @@ import { DefaultEntity } from './../../core/dbentity/default.entity';
 export class AdjustEntity extends DefaultEntity {
   @Column({ unique: true, nullable: true })
   refno: string;
-  @Column()
+
+  @Column({nullable: true})
   addjusttype: string;
 
   @OneToMany(
@@ -23,13 +25,19 @@ export class AdjustEntity extends DefaultEntity {
       eager: true,
     },
   )
-  addjusttdescriptions: AddjustDescriptionEntity[];
+  addjustdescriptions: AddjustDescriptionEntity[];
 
   @ManyToOne(() => warehouseEntity, (warehouse) => warehouse.addjusts, {
     cascade: true,
     eager: true,
   })
   warehouse: warehouseEntity;
+
+  @Column({default:'MockAdmin'})
+  createby:string
+
+  @Column({nullable: true})
+  approveby:string
 }
 
 @Entity('adjustmentdescription')
@@ -41,6 +49,9 @@ export class AddjustDescriptionEntity {
   @ManyToOne(() => SkuEntity, (sku) => sku.addjusts)
   sku: SkuEntity;
 
-  @ManyToOne(() => AdjustEntity, (adjust) => adjust.addjusttdescriptions)
+  @Column({type:'enum',enum:Adjusttype})
+  addjusttype: string;
+
+  @ManyToOne(() => AdjustEntity, (adjust) => adjust.addjustdescriptions)
   adjust: AdjustEntity;
 }

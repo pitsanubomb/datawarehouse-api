@@ -11,7 +11,7 @@ export class AdjustService {
     private readonly adjustRepo: Repository<AdjustEntity>,
   ) {}
 
-  async createAdjust(body: AdjustDto) {
+  async createAdjust(body: any) {
     try {
       return this.adjustRepo.save(body);
     } catch (error) {
@@ -21,30 +21,33 @@ export class AdjustService {
 
   async getAllAdjust() {
     try {
-      const [data, total] = await this.adjustRepo.findAndCount();
-      return { data: data, total: total };
+      return await this.adjustRepo
+        .createQueryBuilder('adjustment')
+        .leftJoinAndSelect(
+          'adjustment.addjustdescriptions',
+          'addjustdescriptions',
+        )
+        .leftJoinAndSelect('addjustdescriptions.sku', 'sku')
+        .getMany();
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
   }
 
-  async getbyId(id: number): Promise<any> {
+  async getById(id: number): Promise<AdjustEntity> {
     try {
-      return await this.adjustRepo.findOneOrFail(id);
+      return this.adjustRepo.findOneOrFail(id);
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
   }
 
-  async getByWarehouseId(id: number): Promise<any> {
-    try {
-      console.log(id)
-      return await this.adjustRepo.findOneOrFail({
-        // relations:['waehouse'],
-        where: { waehouse: id },
-      });
-    } catch (error) {
-      throw new InternalServerErrorException(error);
+  async editAdjust(id:number,body:any): Promise<AdjustEntity> {
+    try{
+      await this.adjustRepo.findOneOrFail(id)
+    return this.adjustRepo.save(body)
+    }catch (error) {
+      throw new InternalServerErrorException(error)
     }
   }
 }
