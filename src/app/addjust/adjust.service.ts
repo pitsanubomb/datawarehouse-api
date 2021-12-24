@@ -56,10 +56,12 @@ export class AdjustService {
       return await this.adjustRepo
         .createQueryBuilder('adjustment')
         .leftJoin('adjustment.addjustdescriptions', 'addjustdescriptions')
+        .leftJoinAndSelect(`adjustment.warehouse`, 'warehouse')
+        .leftJoinAndSelect('addjustdescriptions.sku', 'sku')
         .where('addjustdescriptions.addjusttype = :adjustType', {
           adjustType: adjustType,
         })
-        .select(['addjustdescriptions'])
+        .select(['addjustdescriptions','warehouse','sku'])
         .getRawMany();
     } catch (error) {
       // consol.log(error)
