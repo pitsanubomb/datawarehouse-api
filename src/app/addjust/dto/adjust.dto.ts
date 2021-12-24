@@ -18,9 +18,9 @@ export class Addjusttdescriptions {
   quantity: number;
 
   @ApiProperty({ example: '1', description: 'SKU id' })
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
-  sku: any;
+  sku: number;
 
   @ApiProperty({ enum: Adjusttype })
   @IsNotEmpty()

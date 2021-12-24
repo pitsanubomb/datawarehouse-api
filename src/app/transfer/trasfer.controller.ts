@@ -27,19 +27,31 @@ export class TransferController {
   @Post()
   @ApiBody({ type: transferDto })
   async create(@Body(ValidationPipe) body: transferDto, @Request() { user }) {
-    const saveBody = body;
-    saveBody.orderby = user.user.username;
+    let saveBody = body;
+    saveBody.orderby = user.user.name;
+    const res = await this.transferService.create(saveBody);
 
     if (body.status === 'approve') {
       body.transfer_description.forEach(async (item) => {
-        let quantity = item.quantity;
-        const sku = item.sku;
-        const warehouse = body.to[0].id;
+        const bodyForm = {
+          sku: item.sku,
+          quantity: -item.quantity,
+          warehouse: body.form[0].id,
+        };
 
-        await this.warehouseService.manageSku({ sku, warehouse, quantity });
+        const bodyTo = {
+          sku: item.sku,
+          quantity: item.quantity,
+          warehouse: body.to[0].id,
+        };
+
+        console.log(`Should to do this . . .`)
+
+        await this.warehouseService.manageSku(bodyForm);
+        await this.warehouseService.manageSku(bodyTo);
       });
     }
-    const res = await this.transferService.create(body);
+
     return res;
   }
 

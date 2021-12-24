@@ -38,7 +38,7 @@ export class TransferEntity extends DefaultEntity {
   @Column({ type: 'float', nullable: true })
   cost: number;
 
-  @Column()
+  @Column({nullable: true})
   orderby: string;
 
   @Column({ nullable: true })

@@ -17,9 +17,9 @@ export class DescriptionDto {
   quantity: number;
 
   @ApiProperty({ example: '1', description: 'SKU id' })
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
-  sku: string;
+  sku: number;
 }
 
 export class transferDto {
