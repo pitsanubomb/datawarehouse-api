@@ -71,9 +71,10 @@ export class ProductService {
       throw new InternalServerErrorException(error);
     }
   }
+
   async getAllSkuWithSearch(search: string) {
     // Debug hear
-    console.debug(`Search is . . . ${search}`)
+    // console.debug(`Search is . . . ${search}`);
     try {
       return await this.productRepo.query(`
       SELECT
@@ -89,6 +90,34 @@ export class ProductService {
 	    LEFT JOIN varient ON varient.id = sku_varients_varient.varientId
       WHERE
 	    product.producttype = 'single' and productname LIKE '%${search}%'
+      GROUP BY
+	    sku.id
+      `);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async getAllSkuInWarehouseWithSearch(search: string, w: number) {
+    // Debug hear
+    // console.debug(`Search is . . . ${search}`);
+    try {
+      return await this.productRepo.query(`
+      SELECT
+	    sku.id,
+	    sku.sku,
+	    sku.barcode,
+	    sku.skuname,
+	    CONCAT(sku.skuname, ' ', IFNULL(GROUP_CONCAT(DISTINCT varient.varientname SEPARATOR '/'), '')) productname
+      FROM
+	    sku
+	    LEFT JOIN product ON product.id = sku.productId
+	    LEFT JOIN sku_varients_varient ON sku_varients_varient.skuId = sku.id
+	    LEFT JOIN varient ON varient.id = sku_varients_varient.varientId
+      LEFT JOIN stock ON stock.skuId = sku.id
+      LEFT JOIN warehouse w ON stock.warehouseId = w.id
+      WHERE
+	    product.producttype = 'single' and productname LIKE '%${search}%' and w.id = '${w}'
       GROUP BY
 	    sku.id
       `);
@@ -150,6 +179,23 @@ export class ProductService {
         .leftJoin('product.skus', 'skus')
         .addSelect('product.id')
         .where('skus.id =:id', { id: id })
+        .getOne();
+    } catch (error) {
+      console.error(error);
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async getProductIdAndQuanTityBySkuId(id: number,wid: number) {
+    try {
+      return await this.productRepo
+        .createQueryBuilder('product')
+        .leftJoin('product.skus', 'skus')
+        .leftJoin('skus.stock', 'stock')
+        .leftJoin('skus.warehouse', 'warehouse')
+        .addSelect('product.id')
+        .where('skus.id =:id', { id: id })
+        .where('warehouse.id =:wid',{ wid: wid})
         .getOne();
     } catch (error) {
       console.error(error);

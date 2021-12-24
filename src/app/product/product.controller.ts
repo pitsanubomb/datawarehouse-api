@@ -86,12 +86,19 @@ export class ProductController {
     return await this.productService.getSkuById(id);
   }
 
-  @Get('total')
-  async getAllwithCount() {
-    return await this.productService.getAllwithCount();
-  }
+  // @Get('total')
+  // async getAllwithCount() {
+  //   return await this.productService.getAllwithCount();
+  // }
+
   @Get('product/sku/:id')
   async getProductbySkuId(@Param('id') id: number) {
     return await this.productService.getPorductIdbySkuid(id);
+  }
+
+  @Get('warehouse/search')
+  async getProductbySkuAndWarehouseId(@Query('search') search: string,@Query('warehouse') warehouse: number) {
+    console.log(warehouse)
+    return await this.productService.getAllSkuInWarehouseWithSearch(search,warehouse);
   }
 }

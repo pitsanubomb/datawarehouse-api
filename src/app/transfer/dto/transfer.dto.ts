@@ -46,7 +46,7 @@ export class transferDto {
   @ApiPropertyOptional({ description: 'shipping cost', example: 20 })
   cost?: number;
 
-  @ApiProperty({ description: 'orderby user', example: 'admin' })
+  @ApiPropertyOptional({ description: 'orderby user', example: 'admin' })
   orderby: string;
 
   @ApiPropertyOptional({ description: 'approveby user', example: 'admin' })
