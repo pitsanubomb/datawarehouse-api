@@ -1,4 +1,4 @@
-import { TransferEntity } from './transfer/entity/transfer.entity';
+import { TransferDescriptionEntity, TransferEntity } from './transfer/entity/transfer.entity';
 import { WarehouseModule } from './warehouse/warehouse.module';
 import {
   StockEntity,
@@ -60,7 +60,8 @@ import { AddjustModule } from './addjust/adjust.module';
         StockEntity,
         TransferEntity,
         AdjustEntity,
-        AddjustDescriptionEntity
+        AddjustDescriptionEntity,
+        TransferDescriptionEntity,
       ],
       synchronize: true,
     }),

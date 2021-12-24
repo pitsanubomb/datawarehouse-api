@@ -28,7 +28,7 @@ export class AddjustController {
   ) {}
 
   @Post()
-  async crate(
+  async create(
     @Body(ValidationPipe) body: AdjustDto,
     @Request() { user },
   ): Promise<AdjustEntity> {

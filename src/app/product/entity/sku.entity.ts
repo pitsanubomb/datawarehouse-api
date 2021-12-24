@@ -17,6 +17,7 @@ import {
 } from 'typeorm';
 import { BundleEntity, ProductEntity } from './product.entity';
 import { AttributeEntity } from 'src/app/varients/entity/attribute.entity';
+import { TransferDescriptionEntity } from 'src/app/transfer/entity/transfer.entity';
 
 @Entity('sku')
 export class SkuEntity extends DefaultEntity {
@@ -72,6 +73,12 @@ export class SkuEntity extends DefaultEntity {
     eager: true,
   })
   addjusts: AddjustDescriptionEntity[];
+
+  @OneToMany(() => TransferDescriptionEntity, (transfer) => transfer.sku, {
+    cascade: true,
+    eager: true,
+  })
+  transfer: TransferDescriptionEntity[];
 
   @OneToMany(() => StockEntity, (stock) => stock.sku, {
     cascade: true,

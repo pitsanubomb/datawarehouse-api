@@ -11,7 +11,7 @@ export class TransferService {
     private transferRepo: Repository<TransferEntity>,
   ) {}
 
-  async create(body: transferDto) {
+  async create(body: any) {
     try {
       return await this.transferRepo.save(body);
     } catch (error) {
@@ -23,6 +23,8 @@ export class TransferService {
     try {
       return await this.transferRepo
         .createQueryBuilder('transfer')
+        .leftJoinAndSelect('transfer.transfer_description', 'transfer_description')
+        .leftJoinAndSelect('transfer_description.sku', 'sku')
         .leftJoinAndSelect('transfer.form', 'form')
         .leftJoinAndSelect('transfer.to', 'to')
         .where('form.warehousename = :warehouseName', { warehouseName })

@@ -6,7 +6,12 @@ import {
   Entity,
   JoinTable,
   ManyToMany,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
+import { SkuEntity } from 'src/app/product/entity/sku.entity';
 
 @Entity('transfer')
 export class TransferEntity extends DefaultEntity {
@@ -20,14 +25,14 @@ export class TransferEntity extends DefaultEntity {
     cascade: true,
     eager: true,
   })
-  @JoinTable()
+  @JoinTable({ name: 'for' })
   form: warehouseEntity[];
 
   @ManyToMany(() => warehouseEntity, {
     cascade: true,
     eager: true,
   })
-  @JoinTable()
+  @JoinTable({ name: 'to' })
   to: warehouseEntity[];
 
   @Column({ type: 'float', nullable: true })
@@ -36,16 +41,38 @@ export class TransferEntity extends DefaultEntity {
   @Column()
   orderby: string;
 
-
   @Column({ nullable: true })
   approveby: string;
 
   @CreateDateColumn({ name: 'orderdate' })
   orderdate: Date;
 
-  @Column({ nullable: true })
+  @UpdateDateColumn({ nullable: true, name: 'approvedate' })
   approvedate: Date;
 
   @Column({ nullable: true })
   shippingdate: Date;
+
+  @OneToMany(
+    () => TransferDescriptionEntity,
+    (transfer_description) => transfer_description.transfer,
+    {
+      cascade: true,
+      eager: true,
+    },
+  )
+  transfer_description: TransferDescriptionEntity[];
+}
+
+@Entity('transfer_description')
+export class TransferDescriptionEntity extends DefaultEntity {
+  @PrimaryGeneratedColumn()
+  id: number;
+  @Column({ type: 'int', default: 0 })
+  quantity: number;
+  @ManyToOne(() => SkuEntity, (sku) => sku.transfer)
+  sku: SkuEntity;
+
+  @ManyToOne(() => TransferEntity, (transfer) => transfer.transfer_description)
+  transfer: TransferEntity;
 }

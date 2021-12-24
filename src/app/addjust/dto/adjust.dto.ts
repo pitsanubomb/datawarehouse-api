@@ -17,7 +17,7 @@ export class Addjusttdescriptions {
   @IsNotEmpty()
   quantity: number;
 
-  @ApiProperty({ example: 1, description: 'SKU id' })
+  @ApiProperty({ example: '1', description: 'SKU id' })
   @IsString()
   @IsNotEmpty()
   sku: any;
