@@ -34,8 +34,7 @@ export class AdjustDto {
   @IsOptional()
   refno: string;
 
-  
-  
+
   @ApiProperty({ type: [Addjusttdescriptions] })
   @IsArray()
   @Type(() => Addjusttdescriptions)
@@ -46,6 +45,8 @@ export class AdjustDto {
   @ApiPropertyOptional({ type: 'string', description: '', example: 'active' })
   status?: string;
 
+  @ApiPropertyOptional()
+  description?: string;
 
   @ApiProperty({ example: 1 })
   @IsNotEmpty()

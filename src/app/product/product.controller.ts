@@ -1,6 +1,15 @@
 import { createProduct } from './dto/product.dto';
 import { ProductService } from './product.service';
-import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+  ValidationPipe,
+} from '@nestjs/common';
 import { ApiBody, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 @Controller('product')
@@ -10,12 +19,13 @@ export class ProductController {
 
   @Post()
   @ApiBody({ type: createProduct })
-  async addProduct(@Body() product: createProduct) {
+  async addProduct(@Body(ValidationPipe) product: createProduct) {
     return await this.productService.crateProduct(product);
   }
 
   @Get()
-  async getAll() {
+  async getAll(@Query('search') s: string) {
+    if (s) return await this.productService.getAllSkuWithSearch(s);
     return await this.productService.getAll();
   }
 
@@ -35,6 +45,11 @@ export class ProductController {
     return await this.productService.getAllSku();
   }
 
+  // @Get()
+  // @ApiQuery({ name: 'search'})
+  // async getWithQuery(@Query('search') s:string){
+  // }
+
   @Get(':id')
   async getId(@Param('id') id: number) {
     return await this.productService.getProductId(id);
@@ -51,7 +66,7 @@ export class ProductController {
   }
 
   @Get('sku/product/type')
-  @ApiQuery({ name: 'producttype'})
+  @ApiQuery({ name: 'producttype' })
   async getSkubySinglesku(@Query('producttype') producttype: string) {
     return await this.productService.getAllSkuwithStatus(producttype);
   }

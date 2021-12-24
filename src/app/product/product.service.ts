@@ -18,7 +18,6 @@ export class ProductService {
     try {
       return await this.productRepo.save(productBody);
     } catch (error) {
-      console.log(error);
       throw new InternalServerErrorException(error);
     }
   }
@@ -68,6 +67,31 @@ export class ProductService {
   async getProductId(id: number) {
     try {
       return await this.productRepo.findOneOrFail(id);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+  async getAllSkuWithSearch(search: string) {
+    // Debug hear
+    console.debug(`Search is . . . ${search}`)
+    try {
+      return await this.productRepo.query(`
+      SELECT
+	    sku.id,
+	    sku.sku,
+	    sku.barcode,
+	    sku.skuname,
+	    CONCAT(sku.skuname, ' ', IFNULL(GROUP_CONCAT(varient.varientname SEPARATOR '/'), '')) productname
+      FROM
+	    sku
+	    LEFT JOIN product ON product.id = sku.productId
+	    LEFT JOIN sku_varients_varient ON sku_varients_varient.skuId = sku.id
+	    LEFT JOIN varient ON varient.id = sku_varients_varient.varientId
+      WHERE
+	    product.producttype = 'single' and productname LIKE '%${search}%'
+      GROUP BY
+	    sku.id
+      `);
     } catch (error) {
       throw new InternalServerErrorException(error);
     }

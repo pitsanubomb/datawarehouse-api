@@ -1,7 +1,6 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { AdjustDto } from './dto/adjust.dto';
 import { AdjustEntity } from './entity/adjust.entity';
 
 @Injectable()
@@ -28,6 +27,7 @@ export class AdjustService {
           'addjustdescriptions',
         )
         .leftJoinAndSelect('addjustdescriptions.sku', 'sku')
+        .leftJoinAndSelect(`adjustment.warehouse`, 'warehouse')
         .getMany();
     } catch (error) {
       throw new InternalServerErrorException(error);
@@ -42,12 +42,28 @@ export class AdjustService {
     }
   }
 
-  async editAdjust(id:number,body:any): Promise<AdjustEntity> {
-    try{
-      await this.adjustRepo.findOneOrFail(id)
-    return this.adjustRepo.save(body)
-    }catch (error) {
-      throw new InternalServerErrorException(error)
+  async editAdjust(id: number, body: any): Promise<AdjustEntity> {
+    try {
+      await this.adjustRepo.findOneOrFail(id);
+      return this.adjustRepo.save(body);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async searchAdjustDescription(adjustType: string) {
+    try {
+      return await this.adjustRepo
+        .createQueryBuilder('adjustment')
+        .leftJoin('adjustment.addjustdescriptions', 'addjustdescriptions')
+        .where('addjustdescriptions.addjusttype = :adjustType', {
+          adjustType: adjustType,
+        })
+        .select(['addjustdescriptions'])
+        .getRawMany();
+    } catch (error) {
+      // consol.log(error)
+      throw new InternalServerErrorException(error);
     }
   }
 }

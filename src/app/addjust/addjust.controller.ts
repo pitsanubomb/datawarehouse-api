@@ -8,11 +8,11 @@ import {
   Request,
   Param,
   Post,
-  Query,
   UseGuards,
   Put,
+  ValidationPipe,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AdjustDto } from './dto/adjust.dto';
 import { AdjustEntity } from './entity/adjust.entity';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
@@ -29,7 +29,7 @@ export class AddjustController {
 
   @Post()
   async crate(
-    @Body() body: AdjustDto,
+    @Body(ValidationPipe) body: AdjustDto,
     @Request() { user },
   ): Promise<AdjustEntity> {
     let saveBody: any = body;
@@ -45,7 +45,8 @@ export class AddjustController {
         let quantity: number;
         const sku = item.sku;
         const warehouse = body.warehouse;
-        if (item.addjusttype === 0 || item.addjusttype === 1) {
+    
+        if (item.addjusttype === '1') {
           quantity = item.quantity;
         } else {
           quantity = -item.quantity;
@@ -62,6 +63,12 @@ export class AddjustController {
   async getAll() {
     return await this.adjustmentService.getAllAdjust();
   }
+
+  @Get('addjustdescriptions/:type')
+ async getAllAdjustdes(@Param('type') type: string){
+   return await this.adjustmentService.searchAdjustDescription(type)
+ }
+
 
   @Get(':id')
   async getbyId(@Param('id') id: number) {
@@ -82,12 +89,12 @@ export class AddjustController {
         let quantity: number;
         const sku = item.sku;
         const warehouse = body.warehouse;
-        if (item.addjusttype === 0 || item.addjusttype === 1) {
+        if (item.addjusttype === '0' || item.addjusttype === '1') {
           quantity = item.quantity;
         } else {
           quantity = -item.quantity;
         }
-        const test = await this.warehouseService.manageSku({ sku, warehouse, quantity });
+        await this.warehouseService.manageSku({ sku, warehouse, quantity });
       });
     }
 

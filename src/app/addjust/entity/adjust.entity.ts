@@ -17,6 +17,9 @@ export class AdjustEntity extends DefaultEntity {
   @Column({nullable: true})
   addjusttype: string;
 
+  @Column({nullable: true})
+  description: string
+
   @OneToMany(
     () => AddjustDescriptionEntity,
     (addjusttdescriptions) => addjusttdescriptions.adjust,
