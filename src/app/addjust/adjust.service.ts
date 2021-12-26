@@ -28,6 +28,7 @@ export class AdjustService {
         )
         .leftJoinAndSelect('addjustdescriptions.sku', 'sku')
         .leftJoinAndSelect(`adjustment.warehouse`, 'warehouse')
+        .orderBy('adjustment.id', 'DESC')
         .getMany();
     } catch (error) {
       throw new InternalServerErrorException(error);
@@ -61,10 +62,10 @@ export class AdjustService {
         .where('addjustdescriptions.addjusttype = :adjustType', {
           adjustType: adjustType,
         })
-        .select(['addjustdescriptions','warehouse','sku'])
+        .select(['addjustdescriptions', 'warehouse', 'sku'])
+        .orderBy('addjustdescriptions.id', 'DESC')
         .getRawMany();
     } catch (error) {
-      // consol.log(error)
       throw new InternalServerErrorException(error);
     }
   }

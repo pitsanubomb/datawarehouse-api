@@ -45,7 +45,9 @@ export class ProductService {
      IFNULL(FORMAT(SUM(stock.quantity) / COUNT(DISTINCT stock.id),0), 0) quantity,
      vendor.vendorname,
      IFNULL(SUM(sku.view), 0) view,
-     IFNULL(product.isOnline, 0) online
+     IFNULL(product.isOnline, 0) online,
+     IFNULL(product.isPos, 0) pos
+
    FROM
      sku
      RIGHT JOIN product ON product.id = sku.productId
@@ -54,6 +56,7 @@ export class ProductService {
      LEFT JOIN images img ON img.productId = product.id
    GROUP BY
      product.id
+    ORDER BY product.id DESC
     LIMIT ${skip},
     ${take}`);
       const total = await this.productRepo.count();
