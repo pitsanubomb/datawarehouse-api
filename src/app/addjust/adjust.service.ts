@@ -18,18 +18,31 @@ export class AdjustService {
     }
   }
 
-  async getAllAdjust() {
+  async getAllAdjust(search?: string, page?: number, perpage?: number) {
     try {
-      return await this.adjustRepo
-        .createQueryBuilder('adjustment')
-        .leftJoinAndSelect(
-          'adjustment.addjustdescriptions',
-          'addjustdescriptions',
-        )
-        .leftJoinAndSelect('addjustdescriptions.sku', 'sku')
-        .leftJoinAndSelect(`adjustment.warehouse`, 'warehouse')
-        .orderBy('adjustment.id', 'DESC')
-        .getMany();
+      if (search) {
+        const [res, count] = await this.adjustRepo.findAndCount({
+          relations: ['addjustdescriptions'],
+          order: {
+            id: 'DESC',
+          },
+          where: { addjusttype: search },
+          skip: page,
+          take: perpage,
+          cache: true,
+        });
+        return { data: res, total: count };
+      }
+      const [res, count] = await this.adjustRepo.findAndCount({
+        relations: ['addjustdescriptions'],
+        order: {
+          id: 'DESC',
+        },
+        skip: page,
+        take: perpage,
+        cache: true,
+      });
+      return { data: res, total: count };
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
@@ -52,19 +65,49 @@ export class AdjustService {
     }
   }
 
-  async searchAdjustDescription(adjustType: string) {
+  async searchAdjustDescription(
+    adjustType?: string,
+    page?: number,
+    perpage?: number,
+  ) {
     try {
-      return await this.adjustRepo
-        .createQueryBuilder('adjustment')
-        .leftJoin('adjustment.addjustdescriptions', 'addjustdescriptions')
-        .leftJoinAndSelect(`adjustment.warehouse`, 'warehouse')
-        .leftJoinAndSelect('addjustdescriptions.sku', 'sku')
-        .where('addjustdescriptions.addjusttype = :adjustType', {
-          adjustType: adjustType,
-        })
-        .select(['addjustdescriptions', 'warehouse', 'sku'])
-        .orderBy('addjustdescriptions.id', 'DESC')
-        .getRawMany();
+      const queryBuilder = this.adjustRepo.createQueryBuilder('adjustment');
+      if (adjustType) {
+        queryBuilder
+          .leftJoin('adjustment.addjustdescriptions', 'addjustdescriptions')
+          .leftJoinAndSelect(`adjustment.warehouse`, 'warehouse')
+          .leftJoinAndSelect('addjustdescriptions.sku', 'sku')
+          .where('addjustdescriptions.addjusttype = :adjustType', {
+            adjustType: adjustType,
+          })
+          // .select(['addjustdescriptions', 'warehouse', 'sku'])
+          .orderBy('addjustdescriptions.id', 'DESC');
+      } else {
+        queryBuilder
+          .leftJoin('adjustment.addjustdescriptions', 'addjustdescriptions')
+          .leftJoinAndSelect(`adjustment.warehouse`, 'warehouse')
+          .leftJoinAndSelect('addjustdescriptions.sku', 'sku')
+          // .select(['addjustdescriptions', 'warehouse', 'sku'])
+          .orderBy('addjustdescriptions.id', 'DESC');
+      }
+
+      let res: any;
+      const { count } = await queryBuilder
+        .select('COUNT(*)', 'count')
+        .getRawOne();
+
+      if (page)
+        res = await queryBuilder
+          .offset(--page)
+          .limit(perpage)
+          .select(['addjustdescriptions', 'warehouse', 'sku'])
+          .getRawMany();
+      else
+        res = await queryBuilder
+          .select(['addjustdescriptions', 'warehouse', 'sku'])
+          .getRawMany();
+
+      return { data: res, count: count };
     } catch (error) {
       throw new InternalServerErrorException(error);
     }

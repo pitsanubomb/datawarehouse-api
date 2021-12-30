@@ -52,10 +52,12 @@ export class AdjustDto {
 
   @ApiProperty({
     type: 'string',
-    enum: Status,
-    description: 'Adjust status for filter in Adjustpage',
+    description: 'Adjust type for filter in main table',
+    enum: Adjusttype,
     example: '0',
   })
+  @IsNotEmpty()
+  @IsEnum(Adjusttype)
   addjusttype: string;
 
   @ApiPropertyOptional()
