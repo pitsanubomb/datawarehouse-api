@@ -11,11 +11,13 @@ import {
   UseGuards,
   Put,
   ValidationPipe,
+  Query,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { AdjustDto } from './dto/adjust.dto';
 import { AdjustEntity } from './entity/adjust.entity';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
+import { Adjusttype } from '../core/enum/adjusttype.enum';
 
 @Controller('adjustment')
 @ApiTags('Adjustment')
@@ -60,13 +62,42 @@ export class AddjustController {
   }
 
   @Get()
-  async getAll() {
-    return await this.adjustmentService.getAllAdjust();
+  @ApiQuery({
+    name: 'type',
+    required: false,
+    description: 'Adjustment type',
+    type: 'enum',
+    enum: Adjusttype,
+  })
+  @ApiQuery({ name: 'page', required: false, type: 'number' })
+  @ApiQuery({ name: 'perpage', required: false, type: 'number' })
+  async getAll(
+    @Query('type') type?: string,
+    @Query('page') page?: number,
+    @Query('perpage') perpage?: number,
+  ) {
+    if (page === 1) page = 0;
+    if (page !== 1) page = (page - 1) * perpage + 1;
+    return await this.adjustmentService.getAllAdjust(type, page, perpage);
   }
 
-  @Get('addjustdescriptions/:type')
-  async getAllAdjustdes(@Param('type') type: string) {
-    return await this.adjustmentService.searchAdjustDescription(type);
+  @Get('addjustdescriptions')
+  @ApiQuery({
+    name: 'type',
+    required: false,
+    type: 'enum',
+    enum: Adjusttype,
+  })
+  @ApiQuery({ name: 'page', required: false, type: 'number' })
+  @ApiQuery({ name: 'perpage', required: false, type: 'number' })
+  async getAllAdjustdes(
+    @Query('type') type?: string,
+    @Query('page') page?: number,
+    @Query('perpage') perpage?: number,
+  ) {
+    if (page === 1) page = 0;
+    if (page !== 1) page = (page - 1) * perpage + 1;
+    return await this.adjustmentService.searchAdjustDescription(type,page,perpage);
   }
 
   @Get(':id')
