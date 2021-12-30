@@ -1,5 +1,8 @@
 {
     "cSpell.words": [
         "addjusttype"
-    ]
+    ],
+    "editor.bracketPairColorization.enabled": true,
+    "editor.guides.bracketPairs":"active"
+    
 }

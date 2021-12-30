@@ -72,23 +72,23 @@ export class AdjustService {
   ) {
     try {
       const queryBuilder = this.adjustRepo.createQueryBuilder('adjustment');
+      queryBuilder
+        .leftJoin('adjustment.addjustdescriptions', 'addjustdescriptions')
+        .leftJoinAndSelect(`adjustment.warehouse`, 'warehouse')
+        .leftJoinAndSelect('addjustdescriptions.sku', 'sku');
+
       if (adjustType) {
-        queryBuilder
-          .leftJoin('adjustment.addjustdescriptions', 'addjustdescriptions')
-          .leftJoinAndSelect(`adjustment.warehouse`, 'warehouse')
-          .leftJoinAndSelect('addjustdescriptions.sku', 'sku')
-          .where('addjustdescriptions.addjusttype = :adjustType', {
+        if (adjustType !== '3')
+          queryBuilder.where('addjustdescriptions.addjusttype = :adjustType', {
             adjustType: adjustType,
-          })
-          // .select(['addjustdescriptions', 'warehouse', 'sku'])
-          .orderBy('addjustdescriptions.id', 'DESC');
-      } else {
-        queryBuilder
-          .leftJoin('adjustment.addjustdescriptions', 'addjustdescriptions')
-          .leftJoinAndSelect(`adjustment.warehouse`, 'warehouse')
-          .leftJoinAndSelect('addjustdescriptions.sku', 'sku')
-          // .select(['addjustdescriptions', 'warehouse', 'sku'])
-          .orderBy('addjustdescriptions.id', 'DESC');
+          });
+        else
+          queryBuilder.where(
+            'addjustdescriptions.addjusttype IN (:adjustType)',
+            {
+              adjustType: ['1', '2'],
+            },
+          );
       }
 
       let res: any;
@@ -96,16 +96,11 @@ export class AdjustService {
         .select('COUNT(*)', 'count')
         .getRawOne();
 
-      if (page)
-        res = await queryBuilder
-          .offset(--page)
-          .limit(perpage)
-          .select(['addjustdescriptions', 'warehouse', 'sku'])
-          .getRawMany();
-      else
-        res = await queryBuilder
-          .select(['addjustdescriptions', 'warehouse', 'sku'])
-          .getRawMany();
+      if (page) await queryBuilder.offset(--page).limit(perpage);
+      res = await queryBuilder
+        .select(['addjustdescriptions', 'warehouse', 'sku', 'adjustment.refno'])
+        .orderBy('addjustdescriptions.id', 'DESC')
+        .getRawMany();
 
       return { data: res, count: count };
     } catch (error) {
