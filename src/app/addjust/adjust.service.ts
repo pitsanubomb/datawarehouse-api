@@ -21,17 +21,31 @@ export class AdjustService {
   async getAllAdjust(search?: string, page?: number, perpage?: number) {
     try {
       if (search) {
-        const [res, count] = await this.adjustRepo.findAndCount({
-          relations: ['addjustdescriptions'],
-          order: {
-            id: 'DESC',
-          },
-          where: { addjusttype: search },
-          skip: page,
-          take: perpage,
-          cache: true,
-        });
-        return { data: res, total: count };
+        if (search !== '3') {
+          const [res, count] = await this.adjustRepo.findAndCount({
+            relations: ['addjustdescriptions'],
+            order: {
+              id: 'DESC',
+            },
+            where: { addjusttype: search },
+            skip: page,
+            take: perpage,
+            cache: true,
+          });
+          return { data: res, total: count };
+        } else if (search === '3') {
+          const [res, count] = await this.adjustRepo.findAndCount({
+            relations: ['addjustdescriptions'],
+            order: {
+              id: 'DESC',
+            },
+            where: [{ addjusttype: '1' },{ addjusttype: '2' }],
+            skip: page,
+            take: perpage,
+            cache: true,
+          });
+          return { data: res, total: count };
+        }
       }
       const [res, count] = await this.adjustRepo.findAndCount({
         relations: ['addjustdescriptions'],

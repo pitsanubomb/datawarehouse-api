@@ -3,15 +3,12 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Equal, Not, Repository } from 'typeorm';
 import { StockEntity, warehouseEntity } from './entity/warehouse.entity';
-import { SkuEntity } from '../product/entity/sku.entity';
 
 @Injectable()
 export class WarehouseService {
   constructor(
     @InjectRepository(warehouseEntity, 'data')
     private readonly warehouseRepo: Repository<warehouseEntity>,
-    @InjectRepository(SkuEntity, 'data')
-    private readonly skuRepo: Repository<SkuEntity>,
     @InjectRepository(StockEntity, 'data')
     private readonly stockrepo: Repository<StockEntity>,
   ) {}
@@ -56,6 +53,21 @@ export class WarehouseService {
     // this.skuRepo.find
     try {
       return await this.stockrepo.save(body);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async getStockBySkuId(id: number, wid: number) {
+    try {
+      return await this.stockrepo
+        .createQueryBuilder('stock')
+        .leftJoin('stock.sku', 'sku')
+        .leftJoin('stock.warehouse', 'warehouse')
+        .select('SUM(stock.quantity)', 'sum')
+        .where('sku.id = :id', { id: id })
+        .andWhere('warehouse.id = :wid', { wid: wid })
+        .getRawOne();
     } catch (error) {
       throw new InternalServerErrorException(error);
     }

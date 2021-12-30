@@ -43,7 +43,7 @@ export class AddjustController {
     }
 
     if (body.status === '0') {
-      body.addjustdescriptions.forEach(async (item) => {
+      for (const item of body.addjustdescriptions) {
         let quantity: number;
         const sku = item.sku;
         const warehouse = body.warehouse;
@@ -52,10 +52,21 @@ export class AddjustController {
           quantity = item.quantity;
         } else if (item.addjusttype === '2') {
           quantity = -item.quantity;
+        } else if (item.addjusttype === '0') {
+          const { sum } = await this.warehouseService.getStockBySkuId(
+            sku,
+            warehouse,
+          );
+
+          if (sum > 0) {
+            quantity = item.quantity - sum;
+          } else {
+            quantity = item.quantity + sum;
+          }
         }
 
         await this.warehouseService.manageSku({ sku, warehouse, quantity });
-      });
+      }
     }
 
     return adj;
@@ -97,7 +108,11 @@ export class AddjustController {
   ) {
     if (page === 1) page = 0;
     if (page !== 1) page = (page - 1) * perpage + 1;
-    return await this.adjustmentService.searchAdjustDescription(type,page,perpage);
+    return await this.adjustmentService.searchAdjustDescription(
+      type,
+      page,
+      perpage,
+    );
   }
 
   @Get(':id')
@@ -118,18 +133,29 @@ export class AddjustController {
       throw new InternalServerErrorException(`Can't adjust`);
     }
 
-    if (body.status === '0') {
-      body.addjustdescriptions.forEach(async (item) => {
-        let quantity: number;
-        const sku = item.sku;
-        const warehouse = body.warehouse;
-        if (item.addjusttype === '1') {
-          quantity = item.quantity;
-        } else if (item.addjusttype === '2') {
-          quantity = -item.quantity;
+    for (const item of body.addjustdescriptions) {
+      let quantity: number;
+      const sku = item.sku;
+      const warehouse = body.warehouse;
+
+      if (item.addjusttype === '1') {
+        quantity = item.quantity;
+      } else if (item.addjusttype === '2') {
+        quantity = -item.quantity;
+      } else if (item.addjusttype === '0') {
+        const { sum } = await this.warehouseService.getStockBySkuId(
+          sku,
+          warehouse,
+        );
+
+        if (sum > 0) {
+          quantity = item.quantity - sum;
+        } else {
+          quantity = item.quantity + sum;
         }
-        await this.warehouseService.manageSku({ sku, warehouse, quantity });
-      });
+      }
+
+      await this.warehouseService.manageSku({ sku, warehouse, quantity });
     }
 
     return adj;

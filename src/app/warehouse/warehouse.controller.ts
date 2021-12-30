@@ -15,8 +15,8 @@ import { addSkuDto, WarehouseDto } from './dto/warehouse.dto';
 
 @Controller('warehouse')
 @ApiTags('warehouse')
-// @ApiBearerAuth()
-// @UseGuards(JwtAuthGuard)
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 export class WarehouseController {
   constructor(private readonly warhouseService: WarehouseService) {}
 
@@ -29,13 +29,13 @@ export class WarehouseController {
   @Post('addsku')
   // @ApiBody({ type: addSkuDto })
   async addSku(@Body() body: any) {
-    return await this.warhouseService.addSku(body)
+    return await this.warhouseService.addSku(body);
   }
 
   @Post('managesku')
   @ApiBody({ type: addSkuDto })
   async setSku(@Body() body: any) {
-    return await this.warhouseService.manageSku(body)
+    return await this.warhouseService.manageSku(body);
   }
 
   @Get()
