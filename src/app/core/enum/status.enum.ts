@@ -8,4 +8,7 @@ export enum Status {
   ONPEOCESS = 'onprocess	',
   INPROGRESS = 'inprogress',
   REJECT = 'reject',
+  COMPLETE = '0',
+  PENDING = '2',
+  draft = '1',
 }

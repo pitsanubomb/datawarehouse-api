@@ -14,11 +14,11 @@ export class AdjustEntity extends DefaultEntity {
   @Column({ unique: true, nullable: true })
   refno: string;
 
-  @Column({nullable: true})
+  @Column({ nullable: true, type: 'enum', enum: Adjusttype })
   addjusttype: string;
 
-  @Column({nullable: true})
-  description: string
+  @Column({ nullable: true })
+  description: string;
 
   @OneToMany(
     () => AddjustDescriptionEntity,
@@ -36,11 +36,11 @@ export class AdjustEntity extends DefaultEntity {
   })
   warehouse: warehouseEntity;
 
-  @Column({default:'MockAdmin'})
-  createby:string
+  @Column({ default: 'MockAdmin' })
+  createby: string;
 
-  @Column({nullable: true})
-  approveby:string
+  @Column({ nullable: true })
+  approveby: string;
 }
 
 @Entity('adjustmentdescription')
@@ -52,7 +52,7 @@ export class AddjustDescriptionEntity {
   @ManyToOne(() => SkuEntity, (sku) => sku.addjusts)
   sku: SkuEntity;
 
-  @Column({type:'enum',enum:Adjusttype})
+  @Column({ type: 'enum', enum: Adjusttype })
   addjusttype: string;
 
   @ManyToOne(() => AdjustEntity, (adjust) => adjust.addjustdescriptions)

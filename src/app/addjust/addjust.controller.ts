@@ -34,21 +34,21 @@ export class AddjustController {
   ): Promise<AdjustEntity> {
     let saveBody: any = body;
     saveBody.createby = user.user.name;
-    if ((body.status === 'approve')) saveBody.approveby = user.user.name;
+    if (body.status === '0') saveBody.approveby = user.user.name;
     const adj: any = await this.adjustmentService.createAdjust(body);
     if (!adj) {
       throw new InternalServerErrorException(`Can't adjust`);
     }
 
-    if (body.status === 'approve') {
+    if (body.status === '0') {
       body.addjustdescriptions.forEach(async (item) => {
         let quantity: number;
         const sku = item.sku;
         const warehouse = body.warehouse;
-    
+
         if (item.addjusttype === '1') {
           quantity = item.quantity;
-        } else {
+        } else if (item.addjusttype === '2') {
           quantity = -item.quantity;
         }
 
@@ -65,10 +65,9 @@ export class AddjustController {
   }
 
   @Get('addjustdescriptions/:type')
- async getAllAdjustdes(@Param('type') type: string){
-   return await this.adjustmentService.searchAdjustDescription(type)
- }
-
+  async getAllAdjustdes(@Param('type') type: string) {
+    return await this.adjustmentService.searchAdjustDescription(type);
+  }
 
   @Get(':id')
   async getbyId(@Param('id') id: number) {
@@ -76,22 +75,26 @@ export class AddjustController {
   }
 
   @Put(':id')
-  async ediAdjust(@Param('id') id:number, @Body() body: AdjustDto,@Request() { user }):Promise<AdjustEntity>{
+  async ediAdjust(
+    @Param('id') id: number,
+    @Body() body: AdjustDto,
+    @Request() { user },
+  ): Promise<AdjustEntity> {
     let saveBody: any = body;
-    if ((body.status === 'approve')) saveBody.approveby = user.user.name;
+    if (body.status === '0') saveBody.approveby = user.user.name;
     const adj: any = await this.adjustmentService.createAdjust(body);
     if (!adj) {
       throw new InternalServerErrorException(`Can't adjust`);
     }
 
-    if (body.status === 'approve') {
+    if (body.status === '0') {
       body.addjustdescriptions.forEach(async (item) => {
         let quantity: number;
         const sku = item.sku;
         const warehouse = body.warehouse;
-        if (item.addjusttype === '0' || item.addjusttype === '1') {
+        if (item.addjusttype === '1') {
           quantity = item.quantity;
-        } else {
+        } else if (item.addjusttype === '2') {
           quantity = -item.quantity;
         }
         await this.warehouseService.manageSku({ sku, warehouse, quantity });

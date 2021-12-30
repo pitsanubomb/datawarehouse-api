@@ -14,9 +14,6 @@ export class DefaultEntity {
   @Exclude()
   id: number;
 
-  // @Column({ default: true })
-  // isActive: boolean;
-
   @Column({ type: 'enum', enum: Status })
   status: string;
 
