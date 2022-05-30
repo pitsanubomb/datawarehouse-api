@@ -38,7 +38,7 @@ import { AddjustModule } from './addjust/adjust.module';
     TypeOrmModule.forRoot({
       type: 'mysql',
       // host: 'datawarehouse.giize.com',
-      host: 'db',
+      host: '34.81.168.167',
       name: 'data',
       debug: true,
       port: 3306,
@@ -68,7 +68,7 @@ import { AddjustModule } from './addjust/adjust.module';
     TypeOrmModule.forRoot({
       type: 'mysql',
       name: 'user',
-      host:"db",
+      host:"34.81.168.167",
       // host: 'datawarehouse.giize.com',
       port: 3306,
       debug:true,
