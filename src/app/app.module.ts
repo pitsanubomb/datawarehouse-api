@@ -38,13 +38,13 @@ import { AddjustModule } from './addjust/adjust.module';
     TypeOrmModule.forRoot({
       type: 'mysql',
       // host: 'datawarehouse.giize.com',
-      host: '34.81.168.167',
+      host: 'localhost',
       name: 'data',
       debug: true,
       port: 3306,
       username: 'root',
       password: 'p@ssword',
-      database: 'data-local',
+      database: 'data-loca',
       entities: [
         BundleEntity,
         ProductEntity,
@@ -68,7 +68,7 @@ import { AddjustModule } from './addjust/adjust.module';
     TypeOrmModule.forRoot({
       type: 'mysql',
       name: 'user',
-      host:"34.81.168.167",
+      host:"localhost",
       // host: 'datawarehouse.giize.com',
       port: 3306,
       debug:true,
