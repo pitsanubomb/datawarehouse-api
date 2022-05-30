@@ -37,10 +37,10 @@ import { AddjustModule } from './addjust/adjust.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'datawarehouse.giize.com',
-      // host: 'localhost',
+      // host: 'datawarehouse.giize.com',
+      host: 'localhost',
       name: 'data',
-      // debug: true,
+      debug: true,
       port: 3306,
       username: 'root',
       password: 'p@ssword',
@@ -68,9 +68,10 @@ import { AddjustModule } from './addjust/adjust.module';
     TypeOrmModule.forRoot({
       type: 'mysql',
       name: 'user',
-      host: 'datawarehouse.giize.com',
+      host:"localhost",
+      // host: 'datawarehouse.giize.com',
       port: 3306,
-      // debug:true,
+      debug:true,
       username: 'root',
       password: 'p@ssword',
       database: 'datawarehouse-dev',
